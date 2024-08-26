@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CapMax - Upload a Photo</title>
     <link rel="stylesheet" href="/static/style.css"> 
+    <link rel="icon" href="/static/capmax_icon.png" type="image/x-icon">
 </head>
 <body>
+    <div class="image">
+        <img src="/static/capmax_icon.png" alt="Icon from app">
+    </div>
+    
     <h3>Upload a Photo</h3>
+
     <form id="upload-form" action="/photo/" enctype="multipart/form-data" method="post">
         <input id="file-input" name="file" type="file" accept="image/*">
         <input type="submit" value="Upload">
