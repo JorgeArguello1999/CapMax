@@ -9,6 +9,9 @@ import os
 # Directory 
 direct = "uploads/"
 
+# Suspends num of pixels
+Image.MAX_IMAGE_PIXELS = None
+
 def save(file) -> list:
     """Save Photo
     
