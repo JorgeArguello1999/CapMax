@@ -30,7 +30,7 @@ async def upload_photo(file: UploadFile = File(...)):
     response, file_location = photo.save(file)
 
     # Process photo
-    process = ""
+    process = photo.process(file_location)
 
     # Delete photo
     delete = photo.delete(file_location)

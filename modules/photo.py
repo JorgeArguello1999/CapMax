@@ -1,13 +1,9 @@
-# Shutil for files
+from PIL import Image
+import pytesseract
+
 import shutil
-
-# Unique code
 import uuid
-
-# Regular expresion
 import re
-
-# System 
 import os
 
 # Directory 
@@ -37,6 +33,23 @@ def save(file) -> list:
 
     return [response, file_location]
 
+def process(file_path) -> str:
+    """Process Image
+    
+    Keyword arguments:
+    file_path: Image's directory
+    Return: string from image
+    """
+    try:
+        response = pytesseract.image_to_string(Image.open(file_path))
+        print(response)
+        print("Aquiii")
+
+    except Exception as e:
+        print("No aqui :c")
+        response = str(e)
+    
+    return response
 
 def delete(file_path:str) -> bool:
     """Delete Photo
