@@ -26,11 +26,19 @@ async def get_home(request: Request):
 # Photo
 @app.post("/photo/")
 async def upload_photo(file: UploadFile = File(...)):
-    # Save the file (Temp)
+    # Save the file 
     response, file_location = photo.save(file)
+
+    # Process photo
+    process = ""
+
+    # Delete photo
+    delete = photo.delete(file_location)
 
     return {
         "title": file.filename,
         "saved": file_location,
-        "response" :response
+        "response" :response,
+        "delete": delete,
+        "process": process
     }
