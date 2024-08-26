@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>CapMax - Upload a Photo</title>
+    <link rel="stylesheet" href="/static/style.css"> 
 </head>
 <body>
-
-    <h3>Upload a photo</h3>
-    <form action="/photo/" enctype="multipart/form-data" method="post">
-        <input name="file" type="file">
-        <input type="submit">
+    <h3>Upload a Photo</h3>
+    <form id="upload-form" action="/photo/" enctype="multipart/form-data" method="post">
+        <input id="file-input" name="file" type="file" accept="image/*">
+        <input type="submit" value="Upload">
     </form>
 
+    <div id="preview-container">
+        <img id="image-preview" src="#" alt="Image preview">
+    </div>
+
+    <div id="results">
+        <h4 id="response-title"></h4>
+        <p id="response-text"></p>
+        <p id="process-text"></p>
+    </div>
+
+    <script src="/static/scripts.js"></script> 
 </body>
 </html>

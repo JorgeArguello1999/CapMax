@@ -7,6 +7,7 @@ from fastapi import UploadFile
 from fastapi.responses import HTMLResponse
 from fastapi.requests import Request
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
 # Modules
 from modules import photo
@@ -17,6 +18,8 @@ app = FastAPI()
 
 # Templates dir
 templates = Jinja2Templates(directory="templates")
+# Static Files
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Home
 @app.get('/', response_class=HTMLResponse)
