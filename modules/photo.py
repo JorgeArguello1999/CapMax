@@ -7,6 +7,11 @@ import uuid
 # Regular expresion
 import re
 
+# System 
+import os
+
+# Directory 
+direct = "uploads/"
 
 def save(file) -> list:
     """Save Photo
@@ -19,7 +24,7 @@ def save(file) -> list:
     try: 
         # Is image? 
         if re.match(r".*\.(jpg|jpeg|png)$", file.filename.lower()) is not None:
-            file_location = f"uploads/{str(uuid.uuid4()) + file.filename}"
+            file_location = f"{direct + str(uuid.uuid4()) + file.filename}"
             with open(file_location, "wb") as f:
                 shutil.copyfileobj(file.file, f)
             response = True
@@ -31,3 +36,28 @@ def save(file) -> list:
         file_location = e
 
     return [response, file_location]
+
+
+def delete(file_path:str) -> bool:
+    """Delete Photo
+    
+    Keyword arguments:
+    file_path: Dir photo
+    Return: bool
+    """
+    response = False
+    try:
+        os.remove(file_path)
+        print("Successfull")
+        response = True
+
+    except FileNotFoundError:
+        print(f"File doesn't exist: '{file_path}'")
+
+    except PermissionError:
+        print(f"Delete is not allowed: '{file_path}'.")
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+    return response
