@@ -8,12 +8,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.requests import Request
 from fastapi.templating import Jinja2Templates
 
-# Shutil for files
-import shutil
-
-# Unique code
-import uuid
-
+# Modules
+from modules import photo
 
 
 # Start FastAPI
@@ -31,8 +27,10 @@ async def get_home(request: Request):
 @app.post("/photo/")
 async def upload_photo(file: UploadFile = File(...)):
     # Save the file (Temp)
-    file_location = f"uploads/{file.filename}"
-    with open(file_location, "wb") as f:
-        shutil.copyfileobj(file.file, f)
+    response, file_location = photo.save(file)
 
-    return {"info": f"file '{file.filename}' saved at '{file_location}'"}
+    return {
+        "title": file.filename,
+        "saved": file_location,
+        "response" :response
+    }
