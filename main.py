@@ -35,10 +35,11 @@ async def upload_photo(file: UploadFile = File(...)):
     # Delete photo
     delete = photo.delete(file_location)
 
+    if response and delete: response = True
+    else: False
+
     return {
         "title": file.filename,
-        "saved": file_location,
         "response" :response,
-        "delete": delete,
         "process": process
     }

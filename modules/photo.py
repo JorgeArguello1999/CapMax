@@ -42,11 +42,8 @@ def process(file_path) -> str:
     """
     try:
         response = pytesseract.image_to_string(Image.open(file_path))
-        print(response)
-        print("Aquiii")
 
     except Exception as e:
-        print("No aqui :c")
         response = str(e)
     
     return response
