@@ -1,5 +1,6 @@
+from modules import google_vision as gv
+
 from PIL import Image
-import pytesseract
 
 import shutil
 import uuid
@@ -43,13 +44,9 @@ def process(file_path) -> str:
     file_path: Image's directory
     Return: string from image
     """
-    try:
-        response = pytesseract.image_to_string(Image.open(file_path))
+    text_detect = gv.text_detect(file_path=file_path)
 
-    except Exception as e:
-        response = str(e)
-    
-    return response
+    return text_detect
 
 def delete(file_path:str) -> bool:
     """Delete Photo
