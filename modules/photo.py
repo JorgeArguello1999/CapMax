@@ -44,7 +44,11 @@ def process(file_path) -> str:
     file_path: Image's directory
     Return: string from image
     """
+    # Detect text
     text_detect = gv.text_detect(file_path=file_path)
+
+    # Classify 
+    
 
     return text_detect
 

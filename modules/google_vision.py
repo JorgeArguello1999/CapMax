@@ -35,5 +35,5 @@ def text_detect(file_path:str) -> str:
     return text_detected
 
 if __name__ == "__main__":
-    content = text_detect('../uploads/prueba2.jpg')
+    content = text_detect('../uploads/prueba_2.jpg')
     print(content)
