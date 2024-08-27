@@ -25,11 +25,9 @@ def text_detect(file_path:str) -> str:
 
         # Detec image text content
         image = vision.Image(content=content)
-        result = vision_client.text_detection(image=image)
-        text_detected = result.text_annotations
-
-        if text_detected:
-            text_detected = text_detected[0].description
+        result = vision_client.document_text_detection(image=image)
+        text_detected = result.full_text_annotation
+        text_detected = text_detected.text
 
     except Exception as e:
         text_detected = str(e)
