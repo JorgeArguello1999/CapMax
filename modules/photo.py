@@ -15,10 +15,10 @@ direct = "uploads/"
 Image.MAX_IMAGE_PIXELS = None
 
 def save(file) -> list:
-    """Save Photo
+    """Save Photo\n
     
-    Keyword arguments:
-    file: All data file
+    Keyword arguments:\n
+    file: All data file\n
     Return: [bool, file_dir]
     """
     response = False
@@ -39,11 +39,11 @@ def save(file) -> list:
     return [response, file_location]
 
 def process(file_path) -> str:
-    """Process Image
+    """Process Image\n
     
-    Keyword arguments:
-    file_path: Image's directory
-    Return: string from image
+    Keyword arguments:\n
+    file_path: Image's directory\n
+    Return: string from image\n
     """
     # Detect text
     text_detect = gv.text_detect(file_path=file_path)
@@ -55,10 +55,10 @@ def process(file_path) -> str:
     return dict(text_detect)
 
 def delete(file_path:str) -> bool:
-    """Delete Photo
+    """Delete Photo\n
     
-    Keyword arguments:
-    file_path: Dir photo
+    Keyword arguments: \n
+    file_path: Dir photo\n
     Return: bool
     """
     response = False

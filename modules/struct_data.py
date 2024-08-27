@@ -2,7 +2,14 @@ from modules import clean_data as clr
 
 # Struct with data
 class Data:
-    def __init__(self, text) -> None:
+    """Data Struct for facturas\n
+
+    Keyword arguments:\n
+    text: (str) All text\n 
+    Return: (dict) with all data
+    """
+    
+    def __init__(self, text:str) -> None:
         self.text = text
 
     def to_dict(self):

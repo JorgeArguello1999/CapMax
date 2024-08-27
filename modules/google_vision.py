@@ -12,6 +12,13 @@ credentials_json = getenv('GOOGLE_CLOUD_CREDENTIALS')
 
 # Detect text
 def text_detect(file_path:str) -> str:
+    """Google Text Detection (OCR)\n
+    
+    Keyword arguments:\n
+    file_path: (str) Directory of photo \n
+    Return: (str) All text from photo\n
+    """
+    
     # Google Cloud Client Vision
     credentials = service_account.Credentials.from_service_account_file(credentials_json)
     vision_client = vision.ImageAnnotatorClient(credentials=credentials)

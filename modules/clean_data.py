@@ -2,7 +2,7 @@ import re
 
 # Extract text and create a list 
 def classify(file_path:str=None, text:str=None) -> list:
-    """Classify the text to list items
+    """Classify the text to list items\n
     
     Keyword arguments:\n
     file_path: If you have your text on file\n
@@ -27,7 +27,7 @@ def classify(file_path:str=None, text:str=None) -> list:
 
 # Search a items
 def search(words_list:list, text:bool=False, search_range:int=5, keyword:str="", block_hint:int=4) -> list:
-    """Search items on text
+    """Search items on text\n
    
     Keyword arguments:
     words_list: (list) Text on list \n
