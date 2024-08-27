@@ -1,4 +1,5 @@
 from modules import google_vision as gv
+from modules import clean_data as clr
 
 from PIL import Image
 
@@ -47,8 +48,9 @@ def process(file_path) -> str:
     # Detect text
     text_detect = gv.text_detect(file_path=file_path)
 
-    # Classify 
-    
+    # Classify and search
+    text_detect = clr.create_data_from_text(text=text_detect)
+
 
     return text_detect
 

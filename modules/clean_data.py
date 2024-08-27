@@ -1,4 +1,44 @@
+import json
 import re
+
+# Struct with data
+class Data:
+    def __init__(
+            self, p_ruc, p_nam, c_num, f_com, v_total, c_name 
+            ) -> None:
+        self.proveedor_ruc = p_ruc
+        self.proveedor_nam = p_nam
+        self.comprobate_nu = c_num
+        self.fecha_comprob = f_com
+        self.valor_total = v_total
+        self.cliente_name = c_name
+
+    def to_dict(self):
+        return {
+            "Proveedor_Name": self.proveedor_nam,
+            "Proveedor_RUC": self.proveedor_ruc,
+            "Cliente_Name": self.cliente_name,
+            "Comprobante": self.comprobate_nu,
+            "Date": self.fecha_comprob,
+            "Total_value": self.valor_total
+        }
+
+def create_data_from_text(text: str) -> Data:
+    # Classify Text
+    words_list = classify(text=text)
+
+    # Search specific data
+    p_ruc = search(words_list, text=False, search_range=5, keyword="RUC", block_hint=1)
+    p_nam = search(words_list, text=True, search_range=5, keyword="PROVEEDOR", block_hint=1)
+    c_num = search(words_list, text=False, search_range=5, keyword="COMPROBANTE", block_hint=1)
+    f_com = search(words_list, text=True, search_range=5, keyword="FECHA", block_hint=1)
+    v_total = search(words_list, text=False, search_range=5, keyword="TOTAL", block_hint=3)
+    c_name = search(words_list, text=True, search_range=5, keyword="CLIENTE", block_hint=2)
+
+    # Return Struct with data
+    data = Data(p_ruc, p_nam, c_num, f_com, v_total, c_name)
+    return json.dumps(data.to_dict(), indent=4)
+
 
 # Extract text and create a list 
 def classify(file_path:str=None, text:str=None) -> list:
@@ -75,29 +115,5 @@ def search(words_list:list, text:bool=False, search_range:int=5, keyword:str="",
             
 
 if __name__ == '__main__':
-    """ 
-    # Num
-    text = classify(file_path='../test/prueba_2.txt')
-    text = search(words_list=text, text=False, search_range=5, keyword="TOTAL", block_hint=3)
-    print(text)
-
-    text = classify(file_path='../test/prueba_1.txt')
-    text = search(words_list=text, text=False, search_range=5, keyword="TOTAL", block_hint=3)
-    print(text)
-
-    text = classify(file_path='../test/prueba_0.txt')
-    text = search(words_list=text, text=False, search_range=5, keyword="TOTAL", block_hint=3)
-    print(text)
-
-    """
-    # Text
-    text = classify(file_path='../test/prueba_0.txt')
-    text = search(words_list=text, text=True, search_range=5, keyword="SR.", block_hint=1)
-    print(text)
-
-    text = classify(file_path='../test/prueba_0.txt')
-    text = search(words_list=text, text=True, search_range=9, keyword="FECHA", block_hint=1)
-    print(text)
-
-
-
+    data_instance = create_data_from_text('../test/prueba_0.txt')
+    print(data_instance)
