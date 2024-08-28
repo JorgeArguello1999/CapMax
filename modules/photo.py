@@ -38,18 +38,26 @@ def save(file) -> list:
 
     return [response, file_location]
 
-def process(file_path) -> str:
+def process(file_path) -> dict:
     """Process Image\n
     
     Keyword arguments:\n
     file_path: Image's directory\n
-    Return: string from image\n
+    Return: { \n
+        'rucs' : [ ],\n
+        'dates' : [ ],\n
+        'total_value' : [ ]\n
+        } \n
     """
     # Detect text
     text_detect = gv.text_detect(file_path=file_path)
 
     # Classify and search
-    text_detect = trc.rucs_detects(text=text_detect)
+    text_detect = {
+        'rucs': trc.rucs_detects(text=text_detect),
+        'dates': trc.date_detect(text=text_detect),
+        'total_value': []
+    }
 
     return text_detect
 
