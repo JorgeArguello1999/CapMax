@@ -44,7 +44,10 @@ def rucs_detects(text:str="") -> list:
 
 if __name__ == "__main__":
 
-    with open('../test/prueba_0.txt', 'r') as file:
-        file = file.read()
-    
-    print(rucs_detects(file))
+    # Testing files
+    for i in range(0, 22):
+        with open(f'../test/test_{i}.jpg.txt', 'r') as file:
+            file = file.read()
+        
+        ruc_detect = rucs_detects(file)
+        print(f'Test {i}: {ruc_detect}')
