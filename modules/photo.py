@@ -1,5 +1,4 @@
 from modules import google_vision as gv
-from modules import struct_data as stda
 
 from PIL import Image
 
@@ -49,10 +48,10 @@ def process(file_path) -> str:
     text_detect = gv.text_detect(file_path=file_path)
 
     # Classify and search
-    text_detect = stda.Data(text_detect)
-    text_detect = text_detect.to_dict()
+    # text_detect = stda.Data(text_detect)
+    # text_detect = text_detect.to_dict()
 
-    return dict(text_detect)
+    return text_detect
 
 def delete(file_path:str) -> bool:
     """Delete Photo\n
