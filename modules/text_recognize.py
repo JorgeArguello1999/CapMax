@@ -70,7 +70,9 @@ def date_detect(text:str) -> list:
     regex = r'\b\d{2}\.\d{2}\.\d{4}\b'
     result_four = re.findall(regex, text)
 
-    return set(result_one + result_two + result_tree + result_four)
+    return list(
+        set(result_one + result_two + result_tree + result_four)
+    )
 
 if __name__ == "__main__":
 
