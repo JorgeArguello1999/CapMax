@@ -7,6 +7,11 @@ from os import getenv
 from dotenv import load_dotenv
 load_dotenv()
 
+""" Google OCR
+This File have all functions to recognize characters from photos.
+"""
+
+
 # Credentials 
 credentials_json = getenv('GOOGLE_CLOUD_CREDENTIALS')
 
