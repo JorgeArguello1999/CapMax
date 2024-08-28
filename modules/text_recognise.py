@@ -84,9 +84,9 @@ def total_value_detect(text:str) -> list:
 
     text = text.upper()
     regex = r"TOTAL\s*\$?\s*([\d,\.]+)"
-    result = re.findall(regex, text)
+    results = re.findall(regex, text)
 
-    return result
+    return results
 
 # TESTs
 # _test.py
