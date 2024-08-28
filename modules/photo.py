@@ -1,4 +1,4 @@
-from modules import text_recognize as trc
+from modules import text_recognise as trc
 from modules import google_vision as gv
 
 from PIL import Image

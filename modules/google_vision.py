@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 """ Google OCR
-This File have all functions to recognize characters from photos.
+This File have all functions to recognise characters from photos.
 """
 
 

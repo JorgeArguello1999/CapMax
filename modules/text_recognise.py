@@ -107,7 +107,7 @@ if __name__ == "__main__":
         
         ruc_detect = rucs_detects(file)
         date_detec = date_detect(file)
-        total_v = total_value(file)
+        total_v = total_value_detect(file)
 
         # Classify result
         response = "🤔" 
