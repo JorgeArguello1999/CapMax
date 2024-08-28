@@ -50,25 +50,40 @@ def date_detect(text:str) -> list:
     Return: (list) Items with date
     """
     # Clean spaces from data
-    text = re.sub('\n', '', text)
+    text = re.sub('\n', ' ', text)
 
-    # Search date field "DD/MM/YYYY"
-    pattern = r'\d{2}/\d{2}/\d{4}\b'
-    result = re.findall(pattern, text)
+    # Search with digits
+    texto = re.sub('\.', '', text)
+    regex = r'\b\d{1,2}/[a-zA-Z]{3}/\d{2,4}\b'
+    result_one = re.findall(regex, texto)
 
-    if result == []: 
-        # Search date field "DD/MM/YY" 
-        pattern = r'\d{1,3}/\d{1,3}/\d{2,4}\b'
-        result = re.findall(pattern, text)
+    # Search only nums
+    texto = re.sub(r"[^\d/]", "-", text)
+    regex = r"\b\d{1,2}/(?:\d{1,2}|[a-zA-Z]{3})/\d{2,4}\b"
+    result_two = re.findall(regex, texto)
 
-    return result
+    # Search with '-'
+    regex = r'\b\d{1,2}-\d{1,2}-\d{2,4}\b'
+    result_tree = re.findall(regex, text)
 
+    # Search with '.'
+    regex = r'\b\d{2}\.\d{2}\.\d{4}\b'
+    result_four = re.findall(regex, text)
+
+    return set(result_one + result_two + result_tree + result_four)
 
 if __name__ == "__main__":
 
     # Testing files
     count_bad = 0
     count_good = 0
+    count_maybe = 0
+
+    # Count
+    good = []
+    bad = []
+    maybe = []
+
     for i in range(0, 22):
         with open(f'../test/test_{i}.jpg.txt', 'r') as file:
             file = file.read()
@@ -76,14 +91,31 @@ if __name__ == "__main__":
         ruc_detect = rucs_detects(file)
         date_detec = date_detect(file)
 
-        response = "❌"
-        if ruc_detect != [] and date_detec != []:
+        # Classify result
+        response = "🤔" 
+        if ruc_detect != [] and date_detec != set():
             response = "✅"
-        
-        if response == "❌": count_bad += 1
-        if response == "✅": count_good += 1
 
-        print(f''' Test:  {i} {response} | Ruc: {ruc_detect} | Date: {date_detec} ''')
+        if ruc_detect == [] and date_detec == set():
+            response = "❌"
+        
+        
+        # Save answers
+        if response == "❌": 
+            count_bad += 1
+            bad.append(f' Test:  {i} {response} | Ruc: {ruc_detect} | Date: {date_detec}')
+
+        if response == "✅": 
+            count_good += 1
+            good.append(f' Test:  {i} {response} | Ruc: {ruc_detect} | Date: {date_detec}')
+
+        if response == "🤔": 
+            count_maybe += 1
+            maybe.append(f' Test:  {i} {response} | Ruc: {ruc_detect} | Date: {date_detec}')
+
+    for item in good + bad + maybe:
+        print(item)
     
-    print(f"❌: {count_bad}")
     print(f"✅: {count_good}")
+    print(f"🤔: {count_maybe}")
+    print(f"❌: {count_bad}")
