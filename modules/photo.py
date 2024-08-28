@@ -56,7 +56,7 @@ def process(file_path) -> dict:
     text_detect = {
         'rucs': trc.rucs_detects(text=text_detect),
         'dates': trc.date_detect(text=text_detect),
-        'total_value': []
+        'total_value': trc.total_value_detect(text=text_detect),
     }
 
     return text_detect

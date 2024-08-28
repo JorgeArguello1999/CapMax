@@ -74,7 +74,7 @@ def date_detect(text:str) -> list:
         set(result_one + result_two + result_tree + result_four)
     )
 
-def total_value(text:str) -> list:
+def total_value_detect(text:str) -> list:
     """Search Total Value\n
     
     Keyword arguments:\n
@@ -85,7 +85,6 @@ def total_value(text:str) -> list:
     text = text.upper()
     regex = r"TOTAL\s*\$?\s*([\d,\.]+)"
     result = re.findall(regex, text)
-    print(result)
 
     return result
 
