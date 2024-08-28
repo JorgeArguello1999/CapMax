@@ -74,6 +74,22 @@ def date_detect(text:str) -> list:
         set(result_one + result_two + result_tree + result_four)
     )
 
+def total_value(text:str) -> list:
+    """Search Total Value\n
+    
+    Keyword arguments:\n
+    text: (str) All texto to search
+    Return: (list) with possible total value
+    """
+
+    text = text.upper()
+    regex = r"TOTAL\s*\$?\s*([\d,\.]+)"
+    result = re.findall(regex, text)
+    print(result)
+
+    return result
+
+# TESTs
 if __name__ == "__main__":
 
     # Testing files
@@ -92,28 +108,29 @@ if __name__ == "__main__":
         
         ruc_detect = rucs_detects(file)
         date_detec = date_detect(file)
+        total_v = total_value(file)
 
         # Classify result
         response = "🤔" 
-        if ruc_detect != [] and date_detec != set():
+        if ruc_detect != [] and date_detec != [] and total_v != []:
             response = "✅"
 
-        if ruc_detect == [] and date_detec == set():
+        if ruc_detect == [] and date_detec == [] and total_v == []:
             response = "❌"
         
         
         # Save answers
         if response == "❌": 
             count_bad += 1
-            bad.append(f' Test:  {i} {response} | Ruc: {ruc_detect} | Date: {date_detec}')
+            bad.append(f' Test:  {i} {response} | Ruc: {ruc_detect} | Date: {date_detec} | Value: {total_v}')
 
         if response == "✅": 
             count_good += 1
-            good.append(f' Test:  {i} {response} | Ruc: {ruc_detect} | Date: {date_detec}')
+            good.append(f' Test:  {i} {response} | Ruc: {ruc_detect} | Date: {date_detec} | Value: {total_v}')
 
         if response == "🤔": 
             count_maybe += 1
-            maybe.append(f' Test:  {i} {response} | Ruc: {ruc_detect} | Date: {date_detec}')
+            maybe.append(f' Test:  {i} {response} | Ruc: {ruc_detect} | Date: {date_detec} | Value: {total_v}')
 
     for item in good + bad + maybe:
         print(item)
