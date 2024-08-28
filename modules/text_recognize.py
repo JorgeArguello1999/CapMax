@@ -40,14 +40,50 @@ def rucs_detects(text:str="") -> list:
     ) ]
 
     return results
+
+def date_detect(text:str) -> list:
+    """Date detect
+    This function get date field from text
     
+    Keyword arguments:
+    text: (str) All text from photo
+    Return: (list) Items with date
+    """
+    # Clean spaces from data
+    text = re.sub('\n', '', text)
+
+    # Search date field "DD/MM/YYYY"
+    pattern = r'\d{2}/\d{2}/\d{4}\b'
+    result = re.findall(pattern, text)
+
+    if result == []: 
+        # Search date field "DD/MM/YY" 
+        pattern = r'\d{1,3}/\d{1,3}/\d{2,4}\b'
+        result = re.findall(pattern, text)
+
+    return result
+
 
 if __name__ == "__main__":
 
     # Testing files
+    count_bad = 0
+    count_good = 0
     for i in range(0, 22):
         with open(f'../test/test_{i}.jpg.txt', 'r') as file:
             file = file.read()
         
         ruc_detect = rucs_detects(file)
-        print(f'Test {i}: {ruc_detect}')
+        date_detec = date_detect(file)
+
+        response = "❌"
+        if ruc_detect != [] and date_detec != []:
+            response = "✅"
+        
+        if response == "❌": count_bad += 1
+        if response == "✅": count_good += 1
+
+        print(f''' Test:  {i} {response} | Ruc: {ruc_detect} | Date: {date_detec} ''')
+    
+    print(f"❌: {count_bad}")
+    print(f"✅: {count_good}")
