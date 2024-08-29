@@ -64,7 +64,9 @@ def date_detect(text: str) -> list:
     
     # ReFormat dates
     results = vd.get_valid_dates(list(set(results)))
-    print(results)
+
+    # Most Recent dates filter
+    results = vd.get_most_recent_date(list(set(results)))
 
     return results
 

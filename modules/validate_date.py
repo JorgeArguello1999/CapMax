@@ -48,3 +48,41 @@ def get_valid_dates(dates: list) -> list:
         print(e)
 
     return sorted_dates_str
+
+def get_most_recent_date(dates: list) -> str:
+    """
+    Identify the most recent date, which is likely the issue date of the invoice.
+
+    Parameters:
+    dates (list of str): A list of date strings in the format "dd/mm/yyyy".
+
+    Returns:
+    str: The most recent date formatted as "dd/mm/yyyy".
+    """
+    result = []
+    if not dates: # Empty list
+        return result
+
+    try:
+        # Convert date strings to datetime objects
+        date_objects = [datetime.strptime(date, "%d/%m/%Y") for date in dates]
+        # Sort dates in descending order (most recent first)
+        sorted_dates = sorted(date_objects, reverse=True)
+
+        # Get currently year
+        current_year = datetime.now().year
+
+        # Delete years on future and past
+        sorted_dates = [ i for i in sorted_dates if (
+            int(i.strftime('%Y')) <= current_year and 
+            int(i.strftime('%Y')) >= current_year-2 
+        )]
+
+        # Return the most recent date as a string
+        middle_index = len(sorted_dates)//2
+        result = [sorted_dates[middle_index].strftime("%d/%m/%Y")]
+
+    except Exception as e:
+        print(e)
+
+    return result
