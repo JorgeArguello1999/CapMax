@@ -57,6 +57,7 @@ def process(file_path) -> dict:
         'rucs': trc.rucs_detects(text=text_detect),
         'dates': trc.date_detect(text=text_detect),
         'total_value': trc.total_value_detect(text=text_detect),
+        'factura_n': trc.invoice_number(text=text_detect),
     }
 
     return text_detect

@@ -128,6 +128,7 @@ def invoice_number(text: str) -> int:
     text: (str) All text from photo
     Return: (int) number
     """
+    return re.sub('\n', ' ', text)
     
 # TESTs
 # _test.py

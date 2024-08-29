@@ -32,6 +32,7 @@ if __name__ == "__main__":
         ruc_detect = tcr.rucs_detects(file)
         date_detec = tcr.date_detect(file)
         total_v = tcr.total_value_detect(file)
+        factura_n = tcr.invoice_number(file)
 
         total_rucs_detected += len(ruc_detect)
         total_dates_detected += len(date_detec)
@@ -47,12 +48,10 @@ if __name__ == "__main__":
         results.append([
             i,
             colorize_response(response),
-            len(ruc_detect),
             ruc_detect,
-            len(date_detec),
             date_detec,
-            len(total_v),
-            total_v
+            total_v,
+            factura_n,
         ])
 
         if response == "❌": 
@@ -63,7 +62,7 @@ if __name__ == "__main__":
             count_maybe += 1
 
     # Imprimir los resultados en forma de tabla
-    headers = ["Test", "Resultado", "RUCs Detectados", "RUC", "Fechas Detectadas", "Fechas", "Valores Detectados", "Valores"]
+    headers = ["Test", "Resultado", "RUC", "Fechas", "Valores", "# Factura"]
     print(tabulate(results, headers=headers, tablefmt="fancy_grid"))
 
     # Resumen general con colores
