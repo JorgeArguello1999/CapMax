@@ -62,9 +62,12 @@ def date_detect(text: str) -> list:
     # Replace dashes and dots with slashes for standardization
     results = [re.sub(r'[-.]', '/', result) for result in results]
     
-    results = list(set(results))
-    if len(results) >= 2:
-        results = vd.get_valid_dates(results)
+    # ReFormat dates
+    results = vd.get_valid_dates(list(set(results)))
+    results = [re.sub(r'/', '-', result) for result in results]
+    results = vd.ordenar_fechas(results)
+
+    print(results)
 
     return results
 
