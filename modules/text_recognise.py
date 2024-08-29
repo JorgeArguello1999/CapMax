@@ -1,4 +1,5 @@
 # Modules
+import validate_date as vd
 import re 
 
 """ Recognize differents items, depends that you need
@@ -62,6 +63,9 @@ def date_detect(text: str) -> list:
     results = [re.sub(r'[-.]', '/', result) for result in results]
     
     results = list(set(results))
+    if len(results) >= 2:
+        results = vd.get_valid_dates(results)
+
     return results
 
 def total_value_detect(text:str) -> list:
