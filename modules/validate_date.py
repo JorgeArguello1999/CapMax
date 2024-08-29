@@ -16,15 +16,14 @@ def get_valid_dates(dates: list) -> list:
 
     for date in dates:
         parsed = False
-        for format in formats:
+        for date_format in formats:
             try:
                 # Attempt to parse the date string using the current format
-                parsed_date = datetime.strptime(date, format)
+                parsed_date = datetime.strptime(date, date_format)
 
                 # Format the parsed date to "dd/mm/yyyy" and add it to the valid dates list
                 valid_dates.append(parsed_date.strftime("%d/%m/%Y"))
                 parsed = True
-
                 break
 
             except ValueError:
@@ -39,13 +38,13 @@ def get_valid_dates(dates: list) -> list:
 
     # Convert date strings to datetime objects for sorting
     try:
-        fechas_datetime = [datetime.strptime(fecha, "%d/%m/%Y") for fecha in valid_dates]
+        date_objects = [datetime.strptime(date, "%d/%m/%Y") for date in valid_dates]
         # Sort the dates
-        fechas_ordenadas = sorted(fechas_datetime)
+        sorted_dates = sorted(date_objects)
         # Convert the dates back to strings
-        fechas_ordenadas_str = [fecha.strftime("%d/%m/%Y") for fecha in fechas_ordenadas]
+        sorted_dates_str = [date.strftime("%d/%m/%Y") for date in sorted_dates]
     except Exception as e:
-        fechas_ordenadas_str = []
+        sorted_dates_str = []
         print(e)
 
-    return fechas_ordenadas_str
+    return sorted_dates_str
