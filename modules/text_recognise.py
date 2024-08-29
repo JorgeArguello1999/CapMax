@@ -101,7 +101,7 @@ def total_value_detect(text: str) -> list:
     text = text.upper()
 
     # Regular expression pattern to match "TOTAL" followed by an optional currency symbol and a numeric value
-    regex = r"TOTAL\s*\$?\s*([\d,\.]+)"
+    regex = r"\bTOTAL\b\s*\$?\s*([\d,\.]+)"
 
     # Find all matches of the pattern in the text
     results = re.findall(regex, text)
