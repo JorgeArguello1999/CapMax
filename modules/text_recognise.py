@@ -85,9 +85,18 @@ def total_value_detect(text:str) -> list:
     """
 
     text = text.upper()
+    text = re.sub(r'\n', '-', text)
     regex = r"TOTAL\s*\$?\s*([\d,\.]+)"
     results = re.findall(regex, text)
+    results = [re.sub(',', '.', result) for result in results]
 
+    for i in range(len(results)):
+        try:
+            results[i] = float(results[i])
+        except Exception as e:
+            results[i] = 0
+
+    results = sorted(results, reverse=True)
     return results
 
 # TESTs
