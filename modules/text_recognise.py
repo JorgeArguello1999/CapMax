@@ -1,8 +1,6 @@
 # Modules
 import re 
 
-from typing import List
-
 """ Recognize differents items, depends that you need
 """
 
@@ -35,7 +33,7 @@ def rucs_detects(text: str = "") -> list:
         (x.startswith(tuple(prefix)) and x.endswith(suffix))
     )]
 
-   # Eliminate duplicates while maintaining order
+    # Eliminate duplicates while maintaining order
     seen = set()
     results = [item for item in results if (
         item not in seen and not seen.add(item)
@@ -76,55 +74,8 @@ def date_detect(text:str) -> list:
         set(result_one + result_two + result_tree + result_four)
     )
 
-    results = normalize_dates(results)
-    return find_middle_date(results)
-
-# Normalize date
-def normalize_dates(dates):
-    def normalize_date(date):
-        # Define regex patterns for different date formats
-        patterns = [
-            (r'^(\d{1,2})/(\d{1,2})/(\d{2,4})$', lambda d, m, y: f"{d.zfill(2)}/{m.zfill(2)}/{y.zfill(4) if len(y) == 4 else '20' + y.zfill(2)}"),
-            (r'^(\d{1,2})-(\d{1,2})-(\d{2,4})$', lambda d, m, y: f"{d.zfill(2)}/{m.zfill(2)}/{y.zfill(4) if len(y) == 4 else '20' + y.zfill(2)}"),
-            (r'^(\d{2})\.(\d{2})\.(\d{4})$', lambda d, m, y: f"{d.zfill(2)}/{m.zfill(2)}/{y}"),
-            (r'^(\d{2})/([a-zA-Z]{3})/(\d{2,4})$', lambda d, m, y: f"{d.zfill(2)}/{month_map.get(m.lower(), m)}/{y.zfill(4) if len(y) == 2 else y}")
-        ]
-        
-        month_map = {
-            'ene': '01', 'feb': '02', 'mar': '03', 'abr': '04',
-            'may': '05', 'jun': '06', 'jul': '07', 'ago': '08',
-            'sep': '09', 'oct': '10', 'nov': '11', 'dic': '12'
-        }
-
-        for pattern, formatter in patterns:
-            match = re.match(pattern, date)
-            if match:
-                return formatter(*match.groups())
-        
-        return date  # Return the original date if no pattern matched
-
-    return [normalize_date(date) for date in dates]
-
-def find_middle_date(dates: List[str]) -> str:
-    if not dates:
-        return None  # Return None if the list is empty
-
-    # Convert all dates to a common format for comparison
-    dates = sorted(dates, key=lambda date: (
-        int(date.split('/')[2]),  # Year
-        int(date.split('/')[1]),  # Month
-        int(date.split('/')[0])   # Day
-    ))
-    
-    # Select the middle date
-    mid_index = len(dates) // 2
-    if len(dates) % 2 == 0:
-        # If the list length is even, return the average of the two central elements
-        return dates[mid_index - 1]
-    else:
-        # If the list length is odd, return the middle element
-        return dates[mid_index]
-
+    results = [ re.sub(r'[-.]', '/', result) for result in results]
+    return list(set(results))
 
 def total_value_detect(text:str) -> list:
     """Search Total Value\n
