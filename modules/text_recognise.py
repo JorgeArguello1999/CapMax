@@ -90,13 +90,16 @@ def total_value_detect(text:str) -> list:
     results = re.findall(regex, text)
     results = [re.sub(',', '.', result) for result in results]
 
-    for i in range(len(results)):
-        try:
-            results[i] = float(results[i])
-        except Exception as e:
-            results[i] = 0
+    results = list(map(
+        lambda result: float(result) if (
+            isinstance(result, (int, float, str)) and str(result).replace('.', '', 1).isdigit() 
+        ) else 0.0, 
+        results
+    ))
 
     results = sorted(results, reverse=True)
+    if results == [] : results = []
+    else: results = results[:1]
     return results
 
 # TESTs
