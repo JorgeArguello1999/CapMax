@@ -12,7 +12,7 @@ except:
 Recognize differents items, depends that you need
 """
 
-def rucs_detects(text: str = "") -> list:
+def rucs_detects(text: str = "") -> dict:
     """RUC Detect
     RUC is an item with 10 or 13 numbers.
     This function is only for Ecuador Country.
@@ -47,7 +47,15 @@ def rucs_detects(text: str = "") -> list:
         item not in seen and not seen.add(item)
     )]
 
-    return results
+    results.extend([0] * (2 - len(results)))
+
+    try: results = [ int(result) for result in results ]
+    except: results = results
+    
+    return {
+        "vendor": results[0],
+        "client": results[1]
+    }
 
 def date_detect(text: str) -> list:
     """Date detect
