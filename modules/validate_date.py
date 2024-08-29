@@ -1,8 +1,8 @@
 from datetime import datetime
 
-def get_valid_dates(dates:list) -> list:
+def get_valid_dates(dates: list) -> list:
     """
-    Extract and format valid dates from a list of date strings.
+    Extract, format, and sort unique valid dates from a list of date strings.
 
     Parameters:
     dates (list of str): A list of date strings in various formats.
@@ -34,20 +34,16 @@ def get_valid_dates(dates:list) -> list:
         if not parsed:
             print(f"Invalid date: {date}")
 
-    # Remove duplicates, sort the list, and return the result
-    return sorted(set(valid_dates))
+    # Remove duplicates
+    valid_dates = list(set(valid_dates))
 
-def ordenar_fechas(fechas:list) -> list:
+    # Convert date strings to datetime objects for sorting
     try:
-        # Convertir las fechas a objetos datetime
-        fechas_datetime = [datetime.strptime(fecha, "%d-%m-%Y") for fecha in fechas]
-
-        # Ordenar las fechas
+        fechas_datetime = [datetime.strptime(fecha, "%d/%m/%Y") for fecha in valid_dates]
+        # Sort the dates
         fechas_ordenadas = sorted(fechas_datetime)
-
-        # Convertir las fechas de vuelta a strings
-        fechas_ordenadas_str = [fecha.strftime("%d-%m-%Y") for fecha in fechas_ordenadas]
-    
+        # Convert the dates back to strings
+        fechas_ordenadas_str = [fecha.strftime("%d/%m/%Y") for fecha in fechas_ordenadas]
     except Exception as e:
         fechas_ordenadas_str = []
         print(e)

@@ -64,9 +64,6 @@ def date_detect(text: str) -> list:
     
     # ReFormat dates
     results = vd.get_valid_dates(list(set(results)))
-    results = [re.sub(r'/', '-', result) for result in results]
-    results = vd.ordenar_fechas(results)
-
     print(results)
 
     return results
