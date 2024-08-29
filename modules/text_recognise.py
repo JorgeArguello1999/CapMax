@@ -100,9 +100,6 @@ def total_value_detect(text: str) -> list:
     # Normalize the text by converting it to uppercase
     text = text.upper()
 
-    # Replace newline characters with hyphens to ensure continuity
-    text = re.sub(r'\n', '-', text)
-
     # Regular expression pattern to match "TOTAL" followed by an optional currency symbol and a numeric value
     regex = r"TOTAL\s*\$?\s*([\d,\.]+)"
 
