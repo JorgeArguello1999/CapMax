@@ -1,6 +1,12 @@
 # Modules
-import validate_date as vd
 import re 
+
+# Own modules
+try:
+    import validate_date as vd
+except: 
+    from modules import validate_date as vd
+
 
 """ Recognize differents items, depends that you need
 """
