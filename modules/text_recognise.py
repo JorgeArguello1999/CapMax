@@ -8,7 +8,8 @@ except:
     from modules import validate_date as vd
 
 
-""" Recognize differents items, depends that you need
+""" 
+Recognize differents items, depends that you need
 """
 
 def rucs_detects(text: str = "") -> list:
