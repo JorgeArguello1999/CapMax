@@ -29,8 +29,8 @@ document.getElementById('upload-form').addEventListener('submit', function(event
         document.getElementById('process-total').innerText = '';
 
         // Process and display RUCs
-        const rucVendor = data.process.rucs.vendor ? `<li>${data.process.rucs.vendor}</li>` : '';
-        const rucClient = data.process.rucs.client ? `<li>${data.process.rucs.client}</li>` : '';
+        const rucVendor = data.process.rucs.vendor ? `<li><b>Vendor: </b>${data.process.rucs.vendor}</li>` : '';
+        const rucClient = data.process.rucs.client ? `<li><b>Client: </b>${data.process.rucs.client}</li>` : '';
         document.getElementById('process-rucs').innerHTML = `<ul>${rucVendor}${rucClient}</ul>`;
 
         // Process and display Dates
