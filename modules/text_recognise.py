@@ -76,31 +76,44 @@ def date_detect(text: str) -> list:
 
     return results
 
-def total_value_detect(text:str) -> list:
-    """Search Total Value\n
-    
-    Keyword arguments:\n
-    text: (str) All texto to search
-    Return: (list) with possible total value
+def total_value_detect(text: str) -> list:
+    """
+    Search for the total value in a given text.
+
+    Parameters:
+    text (str): The text in which to search for the total value.
+
+    Returns:
+    list: A list containing the highest detected total value, 
+    or an empty list if no valid total value is found.
     """
 
+    # Normalize the text by converting it to uppercase
     text = text.upper()
+
+    # Replace newline characters with hyphens to ensure continuity
     text = re.sub(r'\n', '-', text)
+
+    # Regular expression pattern to match "TOTAL" followed by an optional currency symbol and a numeric value
     regex = r"TOTAL\s*\$?\s*([\d,\.]+)"
+
+    # Find all matches of the pattern in the text
     results = re.findall(regex, text)
-    results = [re.sub(',', '.', result) for result in results]
 
-    results = list(map(
-        lambda result: float(result) if (
-            isinstance(result, (int, float, str)) and str(result).replace('.', '', 1).isdigit() 
-        ) else 0.0, 
-        results
-    ))
+    # Replace commas with dots to standardize decimal points
+    results = [result.replace(',', '.') for result in results]
 
+    # Convert all detected values to float, or 0.0 if conversion fails
+    results = [
+        float(result) if result.replace('.', '', 1).isdigit() else 0.0
+        for result in results
+    ]
+
+    # Sort the results in descending order
     results = sorted(results, reverse=True)
-    if results == [] : results = []
-    else: results = results[:1]
-    return results
+
+    # Return the highest value or an empty list if no values are found
+    return results[:1] if results else []
 
 # TESTs
 # _test.py
