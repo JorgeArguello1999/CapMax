@@ -23,10 +23,10 @@ if __name__ == "__main__":
 
         # Classify result
         response = "🤔" 
-        if ruc_detect != [] and date_detec != [] and total_v != []:
+        if ruc_detect != [] and date_detec != None and total_v != []:
             response = "✅"
 
-        if ruc_detect == [] and date_detec == [] and total_v == []:
+        if ruc_detect == [] and date_detec == None and total_v == []:
             response = "❌"
         
         
