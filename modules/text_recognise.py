@@ -57,7 +57,7 @@ def rucs_detects(text: str = "") -> dict:
         "client": results[1]
     }
 
-def date_detect(text: str) -> list:
+def date_detect(text: str) -> str:
     """Date detect
     This function extracts date fields from text.
 
@@ -121,5 +121,13 @@ def total_value_detect(text: str) -> list:
     # Return the highest value or an empty list if no values are found
     return results[:1] if results else []
 
+def invoice_number(text: str) -> int:
+    """Invoice number 
+    
+    Keyword arguments:
+    text: (str) All text from photo
+    Return: (int) number
+    """
+    
 # TESTs
 # _test.py
