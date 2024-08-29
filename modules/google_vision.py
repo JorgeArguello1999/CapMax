@@ -7,6 +7,11 @@ from os import getenv
 from dotenv import load_dotenv
 load_dotenv()
 
+""" Google OCR
+This File have all functions to recognise characters from photos.
+"""
+
+
 # Credentials 
 credentials_json = getenv('GOOGLE_CLOUD_CREDENTIALS')
 
@@ -42,5 +47,5 @@ def text_detect(file_path:str) -> str:
     return text_detected
 
 if __name__ == "__main__":
-    content = text_detect('../uploads/prueba_2.jpg')
+    content = text_detect('../uploads/test_2.jpg')
     print(content)

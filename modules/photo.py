@@ -1,5 +1,5 @@
+from modules import text_recognise as trc
 from modules import google_vision as gv
-from modules import struct_data as stda
 
 from PIL import Image
 
@@ -38,21 +38,28 @@ def save(file) -> list:
 
     return [response, file_location]
 
-def process(file_path) -> str:
+def process(file_path) -> dict:
     """Process Image\n
     
     Keyword arguments:\n
     file_path: Image's directory\n
-    Return: string from image\n
+    Return: { \n
+        'rucs' : [ ],\n
+        'dates' : [ ],\n
+        'total_value' : [ ]\n
+        } \n
     """
     # Detect text
     text_detect = gv.text_detect(file_path=file_path)
 
     # Classify and search
-    text_detect = stda.Data(text_detect)
-    text_detect = text_detect.to_dict()
+    text_detect = {
+        'rucs': trc.rucs_detects(text=text_detect),
+        'dates': trc.date_detect(text=text_detect),
+        'total_value': trc.total_value_detect(text=text_detect),
+    }
 
-    return dict(text_detect)
+    return text_detect
 
 def delete(file_path:str) -> bool:
     """Delete Photo\n
