@@ -19,7 +19,10 @@ def rucs_detects(text: str = "") -> dict:
     
     Keyword arguments:
     text: (str) All text for recognition.
-    Return: (list) Items with RUCs in order of appearance.
+    Return: (dict) {
+        'vendor': int,
+        'client': int
+    }.
     """
     # Clean data from letters, spaces or symbols 
     text = re.sub(r'[^a-zA-Z0-9\s]', '', text)

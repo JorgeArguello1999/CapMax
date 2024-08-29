@@ -44,9 +44,13 @@ def process(file_path) -> dict:
     Keyword arguments:\n
     file_path: Image's directory\n
     Return: { \n
-        'rucs' : [ ],\n
-        'dates' : [ ],\n
-        'total_value' : [ ]\n
+        'rucs' : {
+            'vendor': int,
+            'client': int
+        },\n
+        'dates' : '',\n
+        'total_value' : int,\n
+        'factura_n' : int
         } \n
     """
     # Detect text
