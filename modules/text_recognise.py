@@ -41,41 +41,28 @@ def rucs_detects(text: str = "") -> list:
 
     return results
 
-def date_detect(text:str) -> list:
+def date_detect(text: str) -> list:
     """Date detect
-    This function get date field from text
-    
+    This function extracts date fields from text.
+
     Keyword arguments:
-    text: (str) All text from photo
+    text: (str) All text from the photo
     Return: (list) Items with date
     """
     # Clean spaces from data
     text = re.sub('\n', ' ', text)
 
-    # Search with digits
-    texto = re.sub('\.', '', text)
-    regex = r'\b\d{1,2}/[a-zA-Z]{3}/\d{2,4}\b'
-    result_one = re.findall(regex, texto)
-
-    # Search only nums
-    texto = re.sub(r"[^\d/]", "-", text)
-    regex = r"\b\d{1,2}/(?:\d{1,2}|[a-zA-Z]{3})/\d{2,4}\b"
-    result_two = re.findall(regex, texto)
-
-    # Search with '-'
-    regex = r'\b\d{1,2}-\d{1,2}-\d{2,4}\b'
-    result_tree = re.findall(regex, text)
-
-    # Search with '.'
-    regex = r'\b\d{2}\.\d{2}\.\d{4}\b'
-    result_four = re.findall(regex, text)
-
-    results = list(
-        set(result_one + result_two + result_tree + result_four)
-    )
-
-    results = [ re.sub(r'[-.]', '/', result) for result in results]
-    return list(set(results))
+    # Unified regex pattern for various date formats
+    regex = r'\b(?:\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4}|\d{1,2}[-/.][a-zA-Z]{3}[-/.]\d{2,4})\b'
+    
+    # Find all matching date patterns
+    results = re.findall(regex, text)
+    
+    # Replace dashes and dots with slashes for standardization
+    results = [re.sub(r'[-.]', '/', result) for result in results]
+    
+    results = list(set(results))
+    return results
 
 def total_value_detect(text:str) -> list:
     """Search Total Value\n
