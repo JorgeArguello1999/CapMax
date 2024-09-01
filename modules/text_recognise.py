@@ -131,7 +131,29 @@ def invoice_number(text: str) -> int:
     text: (str) All text from photo
     Return: (int) number
     """
-    return re.sub('\n', ' ', text)
+    result = re.sub('\n', ' ', text).upper()
+
+    # First case
+    regex = r"AUT\. SRI\.s*\d{10}"
+    results_cero = re.findall(regex, result)
+
+    # Second case
+    regex = r"AUT\. SRI N°\s*\d{10}"
+    results_one = re.findall(regex, result)
+
+    # Third case
+    regex = r"AUT\. SRI. \s*\d{10}"
+    results_third = re.findall(regex, result)
+
+    # Four case 
+    regex = r"AUTORIZACIÓN\ SRI\ #\ s*\d{10}"
+    results_four = re.findall(regex, result)
+
+    # Five case 
+    regex = r"N°\ s*\d{10}"
+    results_five = re.findall(regex, result)
+
+    return results_cero + results_one + results_third + results_four + results_five
     
 # TESTs
 # _test.py

@@ -22,6 +22,7 @@ if __name__ == "__main__":
     total_rucs_detected = 0
     total_dates_detected = 0
     total_values_detected = 0
+    total_facture_detected = 0
 
     results = []
 
@@ -37,6 +38,7 @@ if __name__ == "__main__":
         total_rucs_detected += len(ruc_detect)
         total_dates_detected += len(date_detec)
         total_values_detected += len(total_v)
+        total_facture_detected += len(factura_n)
 
         response = "🤔" 
         if ruc_detect and date_detec and total_v:
@@ -79,3 +81,4 @@ if __name__ == "__main__":
     print(f"Promedio de RUCs detectados por archivo: {total_rucs_detected / 22:.2f}")
     print(f"Promedio de fechas detectadas por archivo: {total_dates_detected / 22:.2f}")
     print(f"Promedio de valores detectados por archivo: {total_values_detected / 22:.2f}")
+    print(f"Promedio de valores detectados por archivo: {total_facture_detected/ 22:.2f}")
