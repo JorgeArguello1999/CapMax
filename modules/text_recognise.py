@@ -153,7 +153,19 @@ def invoice_number(text: str) -> int:
     regex = r"N°\ s*\d{10}"
     results_five = re.findall(regex, result)
 
-    return results_cero + results_one + results_third + results_four + results_five
+    # Six case
+    regex = r'AUTORIZACIÓN\ s*\d{49}'
+    results_six = re.findall(regex, result)
+
+    # Join all results
+    results = results_cero + results_one + results_third + results_four + results_five + results_six
+
+    # Clean the results
+    results = [ re.sub(r'\D', '', result ) for result in results ]
+    results = [ int(result) for result in results ]
+
+    # Return a int
+    return list(set(results))
     
 # TESTs
 # _test.py

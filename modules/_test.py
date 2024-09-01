@@ -41,9 +41,9 @@ if __name__ == "__main__":
         total_facture_detected += len(factura_n)
 
         response = "🤔" 
-        if ruc_detect and date_detec and total_v:
+        if ruc_detect and date_detec and total_v and factura_n:
             response = "✅"
-        elif not ruc_detect and not date_detec and not total_v:
+        elif not ruc_detect and not date_detec and not total_v and not factura_n:
             response = "❌"
 
         # Guardar el resultado para la tabla
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     print(f"Total de RUCs detectados: {total_rucs_detected}")
     print(f"Total de fechas detectadas: {total_dates_detected}")
     print(f"Total de valores detectados: {total_values_detected}")
-    print(f"Promedio de RUCs detectados por archivo: {total_rucs_detected / 22:.2f}")
-    print(f"Promedio de fechas detectadas por archivo: {total_dates_detected / 22:.2f}")
-    print(f"Promedio de valores detectados por archivo: {total_values_detected / 22:.2f}")
-    print(f"Promedio de valores detectados por archivo: {total_facture_detected/ 22:.2f}")
+    print()
+    print(f"Promedio de fechas detectadas por archivo: {(total_dates_detected / 22)*100:.2f}%")
+    print(f"Promedio de valores detectados por archivo: {(total_values_detected / 22)*100:.2f}%")
+    print(f"Promedio de # facturas detectadas por archivo: {(total_facture_detected/ 22)*100:.2f}%")
