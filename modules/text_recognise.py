@@ -124,51 +124,39 @@ def total_value_detect(text: str) -> list:
     # Return the highest value or an empty list if no values are found
     return results[:1] if results else []
 
-def invoice_number(text: str) -> int:
-    """Invoice number 
+def invoice_number(text: str) -> list:
+    """Extracts potential invoice numbers from the provided text.
+
+    Args:
+        text (str): All text from the photo.
     
-    Keyword arguments:
-    text: (str) All text from photo
-    Return: (int) number
+    Returns:
+        list: A list of unique invoice numbers found in the text.
     """
+    # Normalize text by replacing newlines and converting to uppercase
     result = re.sub('\n', ' ', text).upper()
 
-    # First case
-    regex = r"AUT\. SRI\.s*\d{10}"
-    results_cero = re.findall(regex, result)
+    # Regular expressions to match various formats of invoice numbers
+    regex_patterns = [
+        r"AUT\. SRI\s*\.?\s*N?°?\s*\d{10}",            # Matches various formats of "AUT. SRI" with optional spaces, periods, and "N°"
+        r"AUTORIZACIÓN\s+SRI\s*[#N°]?\s*\d{10}",        # Matches "AUTORIZACIÓN SRI" with optional # or N° followed by 10 digits
+        r"N°\s*\d{10}",                                # Matches "N°" followed by 10 digits
+        r"AUTORIZACIÓN\s*\d{49}",                      # Matches "AUTORIZACIÓN" followed by 49 digits
+        r'\d{49}'                                      # Matches 49 digits
+    ]
 
-    # Second case
-    regex = r"AUT\. SRI N°\s*\d{10}"
-    results_one = re.findall(regex, result)
+    # Combine all patterns into a single regular expression
+    combined_regex = '|'.join(regex_patterns)
 
-    # Third case
-    regex = r"AUT\. SRI. \s*\d{10}"
-    results_third = re.findall(regex, result)
+    # Find all matches based on the combined regex pattern
+    results = re.findall(combined_regex, result)
 
-    # Four case 
-    regex = r"AUTORIZACIÓN\ SRI\ #\ s*\d{10}"
-    results_four = re.findall(regex, result)
+    # Clean the results by removing non-digit characters
+    results = [re.sub(r'\D', '', res) for res in results]
 
-    # Five case 
-    regex = r"N°\ s*\d{10}"
-    results_five = re.findall(regex, result)
-
-    # Six case
-    regex = r'AUTORIZACIÓN\ s*\d{49}'
-    results_six = re.findall(regex, result)
-
-    # Seven case
-    regex = r'\d{49}'
-    results_seven = re.findall(regex, result)
-
-    # Join all results
-    results = results_cero + results_one + results_third + results_four + results_five + results_six + results_seven
-
-    # Clean the results
-    results = [ re.sub(r'\D', '', result ) for result in results ]
-
-    # Return a int
+    # Return a list of unique invoice numbers
     return list(set(results))
-    
+
+
 # TESTs
 # _test.py
