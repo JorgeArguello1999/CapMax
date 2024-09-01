@@ -75,10 +75,12 @@ if __name__ == "__main__":
     
     # Estadísticas adicionales
     print("\nEstadísticas Detalladas:")
-    print(f"Total de RUCs detectados: {total_rucs_detected}")
+    print(f"Total de RUCs detectados: {total_rucs_detected/2}")
     print(f"Total de fechas detectadas: {total_dates_detected}")
     print(f"Total de valores detectados: {total_values_detected}")
+    print(f"Total de # facturas detectadas: {total_facture_detected}")
     print()
+    print(f"Promedio de RUCS detectados por archivo: {(total_rucs_detected/ 44)*100:.2f}%")
     print(f"Promedio de fechas detectadas por archivo: {(total_dates_detected / 22)*100:.2f}%")
     print(f"Promedio de valores detectados por archivo: {(total_values_detected / 22)*100:.2f}%")
     print(f"Promedio de # facturas detectadas por archivo: {(total_facture_detected/ 22)*100:.2f}%")
