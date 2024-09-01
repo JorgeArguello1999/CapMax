@@ -50,11 +50,8 @@ def rucs_detects(text: str = "") -> dict:
         item not in seen and not seen.add(item)
     )]
 
-    results.extend([0] * (2 - len(results)))
+    results.extend([''] * (2 - len(results)))
 
-    try: results = [ int(result) for result in results ]
-    except: results = results
-    
     return {
         "vendor": results[0],
         "client": results[1]
