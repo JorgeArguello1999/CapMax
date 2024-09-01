@@ -136,7 +136,7 @@ def invoice_number(text: str) -> list:
     # Regular expressions to match various formats of invoice numbers
     regex_patterns = [
         r"AUT\. SRI\s*\.?\s*N?°?\s*\d{10}",            # Matches various formats of "AUT. SRI" with optional spaces, periods, and "N°"
-        r"AUTORIZACIÓN\s+SRI\s*[#N°]?\s*\d{10}",        # Matches "AUTORIZACIÓN SRI" with optional # or N° followed by 10 digits
+        r"AUTORIZACIÓN\s+SRI\s*[#N°]?\s*\d{10}",       # Matches "AUTORIZACIÓN SRI" with optional # or N° followed by 10 digits
         r"N°\s*\d{10}",                                # Matches "N°" followed by 10 digits
         r"AUTORIZACIÓN\s*\d{49}",                      # Matches "AUTORIZACIÓN" followed by 49 digits
         r'\d{49}'                                      # Matches 49 digits
