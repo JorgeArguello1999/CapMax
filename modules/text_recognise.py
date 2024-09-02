@@ -125,25 +125,36 @@ def invoice_number(text: str) -> list:
     """Extracts potential invoice numbers from the text
     
     Args:
-        text (str): all text from photo
+        text (str): All text from photo
     
     Returns:
-        list: A list of unique Invoice number found.
+        list: A list of unique Invoice numbers found.
     """
-    # Clean the \n from the text
-    results = re.sub(r'\n', ' ', text)
-    results = re.sub(' ', '-', results)
+    # Clean the text
+    text_cleaned = re.sub(r'\n', ' ', text)
+    text_cleaned = re.sub(' ', '-', text_cleaned)
+    text_cleaned = re.sub(r'\D', '-', text_cleaned)
 
-    # Auth invoice number usually stay at the top from photo
-    large = len(results) // 4
-    text = results[:large]
+    # Work with the first two-thirds of the text
+    large = len(text) // 3
+    sub_text = text[:large * 2]
 
-    # Find the 6-7 digits in sub text
-    regex = r'\b0{3,4}[1-9]\d{2,6}\b'
-    results = re.findall(regex, results)
+    # Find 6-7 digits with 3-4 leading zeros
+    regex_6_7_digits = r'\b0{3,4}[1-9]\d{2,5}\b'
+    results_one = re.findall(regex_6_7_digits, sub_text)
 
-    results = results[0] if results else ''
-    return [results]
+    # If no results found, search for 9 digits with 3-6 leading zeros
+    if not results_one:
+        regex_9_digits = r'\b0{3,6}[1-9]\d{2,5}\b'
+        results_two = re.findall(regex_9_digits, sub_text)
+    else:
+        results_two = []
+
+    # Combine results and remove duplicates
+    results = list(set(results_one + results_two))
+
+    # Return the results
+    return [results[0]] if results else []
 
 def auth_invoice_number(text: str) -> list: 
     """Extracts potential invoice auth numbers from the provided text.
