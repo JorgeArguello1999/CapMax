@@ -122,7 +122,28 @@ def total_value_detect(text: str) -> list:
     return results[:1] if results else []
 
 def invoice_number(text: str) -> list:
-    return []
+    """Extracts potential invoice numbers from the text
+    
+    Args:
+        text (str): all text from photo
+    
+    Returns:
+        list: A list of unique Invoice number found.
+    """
+    # Clean the \n from the text
+    results = re.sub(r'\n', ' ', text)
+    results = re.sub(' ', '-', results)
+
+    # Auth invoice number usually stay at the top from photo
+    large = len(results) // 4
+    text = results[:large]
+
+    # Find the 6-7 digits in sub text
+    regex = r'\b0{3,4}[1-9]\d{2,6}\b'
+    results = re.findall(regex, results)
+
+    results = results[0] if results else ''
+    return [results]
 
 def auth_invoice_number(text: str) -> list: 
     """Extracts potential invoice auth numbers from the provided text.
