@@ -6,12 +6,12 @@ html, body {
 
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2); /* Fondo de degradado */
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2); /* Gradient background */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh; /* Asegura que el contenido siempre llene el viewport */
+    min-height: 100vh; /* Ensures content always fills the viewport */
 }
 
 h3 {
@@ -58,11 +58,11 @@ input[type="submit"]:hover {
 
 #image-preview {
     max-width: 100%;
-    max-height: 400px; /* Ajusta la altura máxima de la imagen */
+    max-height: 400px; /* Adjusts the max height of the image */
     height: auto;
     border-radius: 4px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    object-fit: contain; /* Mantiene la proporción de la imagen */
+    object-fit: contain; /* Maintains the image's aspect ratio */
 }
 
 #results {
@@ -82,4 +82,18 @@ input[type="submit"]:hover {
 #results p {
     margin: 10px 0 0;
     color: #666;
+}
+
+#json-container {
+    margin-top: 20px;
+}
+
+#json-output {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap; /* Preserves the JSON format */
+    word-wrap: break-word; /* Ensures long lines wrap */
 }
