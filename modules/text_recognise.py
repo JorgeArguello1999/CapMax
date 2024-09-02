@@ -19,7 +19,10 @@ def rucs_detects(text: str = "") -> dict:
     
     Keyword arguments:
     text: (str) All text for recognition.
-    Return: (list) Items with RUCs in order of appearance.
+    Return: (dict) {
+        'vendor': int,
+        'client': int
+    }.
     """
     # Clean data from letters, spaces or symbols 
     text = re.sub(r'[^a-zA-Z0-9\s]', '', text)
@@ -47,17 +50,14 @@ def rucs_detects(text: str = "") -> dict:
         item not in seen and not seen.add(item)
     )]
 
-    results.extend([0] * (2 - len(results)))
+    results.extend([''] * (2 - len(results)))
 
-    try: results = [ int(result) for result in results ]
-    except: results = results
-    
     return {
         "vendor": results[0],
         "client": results[1]
     }
 
-def date_detect(text: str) -> list:
+def date_detect(text: str) -> str:
     """Date detect
     This function extracts date fields from text.
 
@@ -120,6 +120,40 @@ def total_value_detect(text: str) -> list:
 
     # Return the highest value or an empty list if no values are found
     return results[:1] if results else []
+
+def invoice_number(text: str) -> list:
+    """Extracts potential invoice numbers from the provided text.
+
+    Args:
+        text (str): All text from the photo.
+    
+    Returns:
+        list: A list of unique invoice numbers found in the text.
+    """
+    # Normalize text by replacing newlines and converting to uppercase
+    result = re.sub('\n', ' ', text).upper()
+
+    # Regular expressions to match various formats of invoice numbers
+    regex_patterns = [
+        r"AUT\. SRI\s*\.?\s*N?°?\s*\d{10}",            # Matches various formats of "AUT. SRI" with optional spaces, periods, and "N°"
+        r"AUTORIZACIÓN\s+SRI\s*[#N°]?\s*\d{10}",       # Matches "AUTORIZACIÓN SRI" with optional # or N° followed by 10 digits
+        r"N°\s*\d{10}",                                # Matches "N°" followed by 10 digits
+        r"AUTORIZACIÓN\s*\d{49}",                      # Matches "AUTORIZACIÓN" followed by 49 digits
+        r'\d{49}'                                      # Matches 49 digits
+    ]
+
+    # Combine all patterns into a single regular expression
+    combined_regex = '|'.join(regex_patterns)
+
+    # Find all matches based on the combined regex pattern
+    results = re.findall(combined_regex, result)
+
+    # Clean the results by removing non-digit characters
+    results = [re.sub(r'\D', '', res) for res in results]
+
+    # Return a list of unique invoice numbers
+    return list(set(results))
+
 
 # TESTs
 # _test.py

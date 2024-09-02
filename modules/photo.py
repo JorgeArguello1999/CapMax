@@ -44,9 +44,13 @@ def process(file_path) -> dict:
     Keyword arguments:\n
     file_path: Image's directory\n
     Return: { \n
-        'rucs' : [ ],\n
-        'dates' : [ ],\n
-        'total_value' : [ ]\n
+        'rucs' : {
+            'vendor': int,
+            'client': int
+        },\n
+        'dates' : '',\n
+        'total_value' : int,\n
+        'factura_n' : int
         } \n
     """
     # Detect text
@@ -57,6 +61,7 @@ def process(file_path) -> dict:
         'rucs': trc.rucs_detects(text=text_detect),
         'dates': trc.date_detect(text=text_detect),
         'total_value': trc.total_value_detect(text=text_detect),
+        'factura_n': trc.invoice_number(text=text_detect),
     }
 
     return text_detect
