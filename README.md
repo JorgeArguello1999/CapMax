@@ -54,6 +54,16 @@ CapMax is a web application that allows users to upload images and processes the
    pip install -r requirements.txt
    ```
 
+5. **Keys and Credentials** `.env`
+
+   ```bash
+   # .env 'file'
+   GOOGLE_CLOUD_CREDENTIALS='google_ccredentials_vision_api.json'
+
+   # DEVELOP OR PRODUCTION
+   DEBUG=false
+   ``` 
+
 6. **Run the Application:**
 
    ```bash
