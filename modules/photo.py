@@ -48,9 +48,10 @@ def process(file_path) -> dict:
             'vendor': int,
             'client': int
         },\n
-        'dates' : '',\n
+        'dates' : str 'DD/MM/YYYY',\n
         'total_value' : int,\n
-        'factura_n' : int
+        'factura_auth' : str\n
+        'factura_n' : str
         } \n
     """
     # Detect text
@@ -61,6 +62,7 @@ def process(file_path) -> dict:
         'rucs': trc.rucs_detects(text=text_detect),
         'dates': trc.date_detect(text=text_detect),
         'total_value': trc.total_value_detect(text=text_detect),
+        'factura_auth': trc.auth_invoice_number(text=text_detect), 
         'factura_n': trc.invoice_number(text=text_detect),
     }
 
