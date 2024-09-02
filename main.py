@@ -12,9 +12,21 @@ from fastapi.staticfiles import StaticFiles
 # Modules
 from modules import photo
 
+# Load env 
+from dotenv import load_dotenv
+from os import getenv
+load_dotenv()
+
+# DEV or PRO
+_debug = getenv('DEBUG')
+docs = None if _debug != 'True' else '/docs'
+redoc = None if _debug != 'True' else '/redoc'
 
 # Start FastAPI
-app = FastAPI()
+app = FastAPI(
+    docs_url=docs,
+    redoc_url=redoc,
+)
 
 # Templates dir
 templates = Jinja2Templates(directory="templates")
