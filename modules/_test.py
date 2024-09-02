@@ -27,7 +27,8 @@ if __name__ == "__main__":
 
     results = []
 
-    for i in range(0, 22):
+    items = 26
+    for i in range(0, items):
         with open(f'../test/test_{i}.jpg.txt', 'r') as file:
             file = file.read()
         
@@ -85,8 +86,8 @@ if __name__ == "__main__":
     print(f"Total de # facturas detectadas: {total_facture_detected}")
     print(f"Total de # Auth facturas detectadas: {total_auth_facture_detected}")
     print()
-    print(f"Promedio de RUCS detectados por archivo: {(total_rucs_detected/ 44)*100:.2f}%")
-    print(f"Promedio de fechas detectadas por archivo: {(total_dates_detected / 22)*100:.2f}%")
-    print(f"Promedio de valores detectados por archivo: {(total_values_detected / 22)*100:.2f}%")
-    print(f"Promedio de # facturas detectadas por archivo: {(total_facture_detected/ 22)*100:.2f}%")
-    print(f"Promedio de # Auth facturas detectadas por archivo: {(total_auth_facture_detected/ 22)*100:.2f}%")
+    print(f"Promedio de RUCS detectados por archivo: {(total_rucs_detected/ (items*2))*100:.2f}%")
+    print(f"Promedio de fechas detectadas por archivo: {(total_dates_detected / items)*100:.2f}%")
+    print(f"Promedio de valores detectados por archivo: {(total_values_detected / items)*100:.2f}%")
+    print(f"Promedio de # facturas detectadas por archivo: {(total_facture_detected/ items)*100:.2f}%")
+    print(f"Promedio de # Auth facturas detectadas por archivo: {(total_auth_facture_detected/ items)*100:.2f}%")
