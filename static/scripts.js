@@ -13,7 +13,7 @@ document.getElementById('upload-form').addEventListener('submit', function(event
     event.preventDefault();  // Prevent the form from submitting the traditional way
     const formData = new FormData(this);
 
-    fetch('/photo/', {
+    fetch('photo/', {
         method: 'POST',
         body: formData
     })
