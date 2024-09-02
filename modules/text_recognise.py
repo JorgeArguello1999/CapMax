@@ -125,7 +125,7 @@ def invoice_number(text: str) -> list:
     return []
 
 def auth_invoice_number(text: str) -> list: 
-    """Extracts potential invoice numbers from the provided text.
+    """Extracts potential invoice auth numbers from the provided text.
 
     Args:
         text (str): All text from the photo.
