@@ -122,13 +122,16 @@ def total_value_detect(text: str) -> list:
     return results[:1] if results else []
 
 def invoice_number(text: str) -> list:
+    return []
+
+def auth_invoice_number(text: str) -> list: 
     """Extracts potential invoice numbers from the provided text.
 
     Args:
         text (str): All text from the photo.
     
     Returns:
-        list: A list of unique invoice numbers found in the text.
+        list: A list of unique Auth invoice numbers found in the text.
     """
     # Normalize text by replacing newlines and converting to uppercase
     result = re.sub('\n', ' ', text).upper()
