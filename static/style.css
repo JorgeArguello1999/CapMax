@@ -51,8 +51,18 @@ input[type="submit"]:hover {
     width: 10em;
 }
 
-#preview-container {
+#preview-container, #results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px; /* Adjust as needed */
     margin-top: 20px;
+}
+
+#preview-container {
+    flex: 1;
+    justify-content: center;
     text-align: center;
 }
 
@@ -66,7 +76,7 @@ input[type="submit"]:hover {
 }
 
 #results {
-    margin-top: 20px;
+    flex: 1;
     padding: 15px;
     background-color: #fff;
     border-radius: 4px;
