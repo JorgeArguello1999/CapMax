@@ -1,6 +1,4 @@
 ![CapMax Icon](static/capmax_icon.png)
-<style> img { border-radius: 50em; } </style>
-
 
 # CapMax
 
