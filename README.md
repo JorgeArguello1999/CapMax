@@ -1,4 +1,5 @@
 ![CapMax Icon](static/capmax_icon.png)
+<style> img { border-radius: 50em; } </style>
 
 
 # CapMax
@@ -9,7 +10,7 @@ CapMax is a web application that allows users to upload images and processes the
 
 - **Image Upload:** Users can upload images in JPEG, PNG, and JPG formats.
 - **Image Preview:** Displays a preview of the uploaded image before submission.
-- **OCR Processing:** Extracts text from the uploaded image using Tesseract OCR.
+- **OCR Processing:** Extracts text from the uploaded image using Google Vision OCR.
 - **Results Display:** Shows the extracted text and processing details on the same page.
 
 ## Technologies Used
@@ -17,7 +18,7 @@ CapMax is a web application that allows users to upload images and processes the
 - **FastAPI:** Web framework for building APIs.
 - **Python:** Programming language used for backend development.
 - **Pillow (PIL):** Python Imaging Library for image processing.
-- **Tesseract OCR:** Open-source OCR engine used for text extraction.
+- **Google Vision OCR:** Propietary OCR engine used for text extraction.
 - **JavaScript:** Used for handling image preview and form submission.
 - **HTML/CSS:** Used for creating the user interface.
 
@@ -28,7 +29,6 @@ CapMax is a web application that allows users to upload images and processes the
    ```bash
    git clone <repository-url>
    cd CapMax
-   sudo apt install tesseract-ocr 
    ```
 
 2. **Create a Virtual Environment:**
@@ -39,15 +39,12 @@ CapMax is a web application that allows users to upload images and processes the
 
 3. **Activate the Virtual Environment:**
 
-   On Windows:
 
    ```bash
+   # On Windows:
    .venv\Scripts\activate
-   ```
 
-   On macOS/Linux:
-
-   ```bash
+   # On macOS/Linux:
    source .venv/bin/activate
    ```
 
@@ -57,30 +54,78 @@ CapMax is a web application that allows users to upload images and processes the
    pip install -r requirements.txt
    ```
 
-5. **Install Tesseract OCR:**
+5. **Keys and Credentials** `.env`
 
-   Follow the installation instructions for your operating system from the [Tesseract GitHub repository](https://github.com/tesseract-ocr/tesseract).
+   ```bash
+   # .env 'file'
+   GOOGLE_CLOUD_CREDENTIALS='google_ccredentials_vision_api.json'
+
+   # DEVELOP OR PRODUCTION
+   DEBUG=false
+   ``` 
 
 6. **Run the Application:**
 
    ```bash
-   uvicorn main:app --reload
+   uvicorn main:app --reload --host 0.0.0.0
    ```
 
    The application will be accessible at `http://127.0.0.1:8000`.
 
-## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+#  Use
+
+## Endpoint Documentation
+
+### `/photo/`
+
+**Method:** POST  
+**Description:** Upload a photo and receive processed information.
+
+### Request
+
+- **Headers:**
+  - `Accept: application/json`
+  - `Content-Type: multipart/form-data`
+- **Body:**
+  - `file` (required): The image file to upload. It should be in binary format.
+
+### Curl Example
+
+```bash
+curl -X 'POST' \
+  'http://127.0.0.1:8000/photo/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'file=@test_12.jpg;type=image/jpeg'
 ```
 
-### Explanation
+## Responses
 
-- **Application Description:** Briefly explains what CapMax does.
-- **Features:** Lists the features of the application.
-- **Technologies Used:** Specifies the technologies and tools used in the project.
-- **Setup and Installation:** Provides instructions for setting up and running the application.
-- **Application Icon:** Displays the icon of the application.
-- **License:** Includes a placeholder for licensing information.
-
-Make sure to replace `<repository-url>` with the actual URL of your repository if you're sharing this README online.
+### **200 OK:**
+  - **Description:** Successful response with the processed data.
+  - **Content:**
+    ```json
+    {
+      "title": "test_12.jpg",
+      "response": true,
+      "process": {
+        "rucs": {
+          "vendor": "1600803199001",
+          "client": "1600312001001"
+        },
+        "dates": [
+          "22/08/2023"
+        ],
+        "total_value": [
+          18.75
+        ],
+        "factura_auth": [
+          "1131483094"
+        ],
+        "factura_n": [
+          "0002427"
+        ]
+      }
+    }
+    ```
