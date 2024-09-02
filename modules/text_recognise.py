@@ -122,13 +122,48 @@ def total_value_detect(text: str) -> list:
     return results[:1] if results else []
 
 def invoice_number(text: str) -> list:
-    """Extracts potential invoice numbers from the provided text.
+    """Extracts potential invoice numbers from the text
+    
+    Args:
+        text (str): All text from photo
+    
+    Returns:
+        list: A list of unique Invoice numbers found.
+    """
+    # Clean the text
+    text_cleaned = re.sub(r'\n', ' ', text)
+    text_cleaned = re.sub(' ', '-', text_cleaned)
+    text_cleaned = re.sub(r'\D', '-', text_cleaned)
+
+    # Work with the first two-thirds of the text
+    large = len(text) // 3
+    sub_text = text[:large * 2]
+
+    # Find 6-7 digits with 3-4 leading zeros
+    regex_6_7_digits = r'\b0{3,4}[1-9]\d{2,5}\b'
+    results_one = re.findall(regex_6_7_digits, sub_text)
+
+    # If no results found, search for 9 digits with 3-6 leading zeros
+    if not results_one:
+        regex_9_digits = r'\b0{3,6}[1-9]\d{2,5}\b'
+        results_two = re.findall(regex_9_digits, sub_text)
+    else:
+        results_two = []
+
+    # Combine results and remove duplicates
+    results = list(set(results_one + results_two))
+
+    # Return the results
+    return [results[0]] if results else []
+
+def auth_invoice_number(text: str) -> list: 
+    """Extracts potential invoice auth numbers from the provided text.
 
     Args:
         text (str): All text from the photo.
     
     Returns:
-        list: A list of unique invoice numbers found in the text.
+        list: A list of unique Auth invoice numbers found in the text.
     """
     # Normalize text by replacing newlines and converting to uppercase
     result = re.sub('\n', ' ', text).upper()
