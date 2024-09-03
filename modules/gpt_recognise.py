@@ -1,7 +1,10 @@
 from dotenv import load_dotenv
 from os import getenv
-import base64
+
 import requests
+import base64
+import json
+import re
 
 # Load environment variables from a .env file
 load_dotenv()
@@ -71,7 +74,11 @@ def process_image(image_path):
 
     # Get the response and return it in JSON format
     response_dict = response.json()
-    return response_dict['choices'][0]['message']['content']
+    output = response_dict['choices'][0]['message']['content']
+
+    # JSON convert
+    results = re.sub(r'\n| |```|json', '', output)
+    return json.loads(results)
 
 # Example usage
 if __name__ == "__main__":

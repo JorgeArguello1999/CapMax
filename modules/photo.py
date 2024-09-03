@@ -57,7 +57,7 @@ def process(file_path) -> dict:
     # Detect text
     text_detect = gv.text_detect(file_path=file_path)
 
-    # Classify and search
+    # Classify and search by REGEX
     text_detect = {
         'rucs': trc.rucs_detects(text=text_detect),
         'dates': trc.date_detect(text=text_detect),
