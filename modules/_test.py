@@ -5,13 +5,29 @@ from colorama import Fore, Style, init
 # Inicializa colorama para la compatibilidad en todas las plataformas
 init(autoreset=True)
 
-def colorize_response(response):
-    if response == "✅":
-        return Fore.GREEN + response
-    elif response == "❌":
-        return Fore.RED + response
+def colorize_response(score):
+    if score >= 5:
+        return Fore.GREEN + f"✅ ({score} puntos)"
+    elif score >= 3:
+        return Fore.YELLOW + f"🤔 ({score} puntos)"
     else:
-        return Fore.YELLOW + response
+        return Fore.RED + f"❌ ({score} puntos)"
+
+def calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n):
+    score = 5
+    if not ruc_detect.get("vendor"):
+        score -= 1
+    if not ruc_detect.get("client"):
+        score -= 1
+    if not date_detect:
+        score -= 1
+    if not total_v:
+        score -= 1
+    if not factura_n:
+        score -= 1
+    if not auth_factura_n:
+        score -= 1
+    return score
 
 if __name__ == "__main__":
 
@@ -45,15 +61,12 @@ if __name__ == "__main__":
             total_facture_detected += len(factura_n)
             total_auth_facture_detected += len(auth_factura_n)
 
-            response = "🤔" 
-            if all([ruc_detect["vendor"], date_detect, total_v, factura_n, auth_factura_n]):
-                response = "✅"
-            elif not any([ruc_detect["vendor"], date_detect, total_v, factura_n, auth_factura_n]):
-                response = "❌"
+            score = calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n)
+            response = colorize_response(score)
 
             results.append([
                 i,
-                colorize_response(response),
+                response,
                 ruc_detect,
                 date_detect or 'N/A',
                 total_v or 'N/A',
@@ -61,12 +74,12 @@ if __name__ == "__main__":
                 auth_factura_n or 'N/A'
             ])
 
-            if response == "❌": 
-                count_bad += 1
-            elif response == "✅": 
+            if score >= 5: 
                 count_good += 1
-            else: 
+            elif score >= 3: 
                 count_maybe += 1
+            else: 
+                count_bad += 1
 
         except Exception as e:
             print(f"Error procesando test_{i}: {str(e)}")
@@ -76,7 +89,7 @@ if __name__ == "__main__":
     headers = ["Test", "Resultado", "RUC", "Fechas", "Valores", "# Factura", "Auth Factura"]
     print(tabulate(results, headers=headers, tablefmt="fancy_grid"))
 
-    # Resumen general con colores
+    # Resumen general con colores y puntuaciones
     print("\nResumen General:")
     print(Fore.GREEN + f"✅: {count_good} | Casos completamente detectados")
     print(Fore.YELLOW + f"🤔: {count_maybe} | Casos parcialmente detectados")
