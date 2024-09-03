@@ -78,10 +78,15 @@ def process_image(image_path):
 
     # JSON convert
     results = re.sub(r'\n| |```|json', '', output)
-    return json.loads(results)
+    results = json.loads(results)
+
+    try:
+      return results['process']
+    except:
+      return []
 
 # Example usage
 if __name__ == "__main__":
     image_path = "../uploads/test_13.jpg"  # Path to your image
     result = process_image(image_path)
-    print(result)
+    print(result['process'])
