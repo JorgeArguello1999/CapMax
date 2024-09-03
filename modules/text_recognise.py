@@ -99,8 +99,9 @@ def total_value_detect(text: str) -> list:
     list: A list containing the highest detected total value, 
     or an empty list if no valid total value is found.
     """
+    text = re.sub('\n', ' ', text) 
     large = len(text) // 3
-    text = text[:large * 2]
+    print(text)
 
     # Normalize the text by converting it to uppercase
     text = text.upper()
