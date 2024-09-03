@@ -53,7 +53,6 @@ def total_value_detect(text: str) -> list:
     results = REGEX_TOTAL.findall(text)
     results = [float(val.replace(',', '.')) for val in results if val.replace('.', '', 1).isdigit()]
     results = [result for result in results if len(str(result)) < 7]
-    print(results)
 
     return [max(results)] if results else []
 
