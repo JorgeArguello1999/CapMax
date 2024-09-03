@@ -65,6 +65,9 @@ def date_detect(text: str) -> str:
     text: (str) All text from the photo
     Return: (list) Items with date
     """
+    large = len(text) // 3
+    text = text[:large * 2]
+
     # Clean spaces from data
     text = re.sub('\n', ' ', text)
 
@@ -96,6 +99,8 @@ def total_value_detect(text: str) -> list:
     list: A list containing the highest detected total value, 
     or an empty list if no valid total value is found.
     """
+    large = len(text) // 3
+    text = text[:large * 2]
 
     # Normalize the text by converting it to uppercase
     text = text.upper()
