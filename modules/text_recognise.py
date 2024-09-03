@@ -18,6 +18,7 @@ PREFIXES = {f'0{i}' for i in range(1, 10)}.union({f'{i}' for i in range(11, 25)}
 SUFFIX = '001'
 
 def rucs_detects(text: str = "") -> dict:
+    text = re.sub('/', '1', text)
     text = re.sub(r'[^a-zA-Z0-9\s]', '', text)[:len(text) * 2 // 3]
     results = [
         ruc for ruc in REGEX_RUC.findall(text) if (
