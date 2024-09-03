@@ -9,9 +9,10 @@ except:
 REGEX_RUC = re.compile(r'\d{10,13}')
 REGEX_DATE = re.compile(r'\b(?:\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4}|\d{1,2}[-/.][a-zA-Z]{3}[-/.]\d{2,4})\b')
 REGEX_TOTAL = re.compile(r"\bTOTAL\b\s*\$?\s*([\d,\.]+)")
+REGEX_INVOICE = re.compile(r'\b\d{3}-\d{3}-\d{9}\b')
+REGEX_AUTH_INVOICE = re.compile(r"AUT\. SRI\s*\.?\s*N?°?\s*\d{10}|AUTORIZACIÓN\s+SRI\s*[#N°]?\s*\d{10}|N°\s*\d{10}|AUTORIZACIÓN\s*\d{49}|\d{49}")
 REGEX_INVOICE_6_7_DIGITS = re.compile(r'\b0{3,4}[1-9]\d{2,5}\b')
 REGEX_INVOICE_9_DIGITS = re.compile(r'\b0{3,6}[1-9]\d{2,5}\b')
-REGEX_AUTH_INVOICE = re.compile(r"AUT\. SRI\s*\.?\s*N?°?\s*\d{10}|AUTORIZACIÓN\s+SRI\s*[#N°]?\s*\d{10}|N°\s*\d{10}|AUTORIZACIÓN\s*\d{49}|\d{49}")
 
 # Prefix and Suffix for RUC detection
 PREFIXES = {f'0{i}' for i in range(1, 10)}.union({f'{i}' for i in range(11, 25)}, {'88', '90'})
@@ -53,9 +54,16 @@ def total_value_detect(text: str) -> list:
     return [max(results)] if results else []
 
 def invoice_number(text: str) -> list:
-    text_cleaned = re.sub(r'\D', '-', re.sub(r'\n', ' ', text))[:len(text) * 2 // 3]
-    results = REGEX_INVOICE_6_7_DIGITS.findall(text_cleaned) or REGEX_INVOICE_9_DIGITS.findall(text_cleaned)
-    return list(set(results))[:1]
+    text_cleaned = re.sub(r'\n', ' ', text)
+    results = REGEX_INVOICE.findall(text_cleaned)
+    results = list(set(results))
+
+    if results == []: 
+        text_cleaned = re.sub(r'\D', '-', re.sub(r'\n', ' ', text))[:len(text) * 2 // 3]
+        results = REGEX_INVOICE_6_7_DIGITS.findall(text_cleaned) or REGEX_INVOICE_9_DIGITS.findall(text_cleaned)
+        results = list(set(results))[:1]
+
+    return results
 
 def auth_invoice_number(text: str) -> list:
     result = REGEX_AUTH_INVOICE.findall(re.sub('\n', ' ', text).upper())
