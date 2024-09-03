@@ -1,4 +1,5 @@
 from modules import text_recognise as trc
+from modules import gpt_recognise as gpt
 from modules import google_vision as gv
 
 from PIL import Image
@@ -38,11 +39,12 @@ def save(file) -> list:
 
     return [response, file_location]
 
-def process(file_path) -> dict:
+def process(file_path, ai:bool=True) -> dict:
     """Process Image\n
     
     Keyword arguments:\n
     file_path: Image's directory\n
+    ai (bool): False -> REGEX function True -> GPT recognise
     Return: { \n
         'rucs' : {
             'vendor': int,
@@ -54,6 +56,9 @@ def process(file_path) -> dict:
         'factura_n' : str
         } \n
     """
+
+    if ai: return gpt.process_image(file_path)
+
     # Detect text
     text_detect = gv.text_detect(file_path=file_path)
 
