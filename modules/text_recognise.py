@@ -48,6 +48,8 @@ def date_detect(text: str) -> str:
 
 def total_value_detect(text: str) -> list:
     text = re.sub('\n', ' ', text).upper()
+    text = re.sub(r'[^a-zA-Z0-9.,]', ' ', text)
+
     results = [
         float(val.replace(',', '.')) for val in REGEX_TOTAL.findall(text) if val.replace('.', '', 1).isdigit()
     ]
