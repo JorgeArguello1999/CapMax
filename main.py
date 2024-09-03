@@ -14,13 +14,27 @@ from modules import photo
 
 # Load env 
 from dotenv import load_dotenv
+from os import makedirs 
 from os import getenv
+from os import path
 load_dotenv()
 
 # DEV or PRO
 _debug = getenv('DEBUG')
 docs = None if _debug != 'True' else '/docs'
 redoc = None if _debug != 'True' else '/redoc'
+
+# 'uploads/' directory
+dire = 'uploads/'
+if not path.exists(dire): 
+    try: 
+        makedirs(dire)
+        print(f'>>> Directory {dire} created...')
+    except Exception as e:
+        print(f'>>> Error: {str(e)}')
+
+else: 
+    print(f'>>> Directory {dire} exist')
 
 # Start FastAPI
 app = FastAPI(
