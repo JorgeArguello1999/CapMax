@@ -1,5 +1,5 @@
+from modules import decision_engine as dcse
 from modules import text_recognise as trc
-from modules import gpt_recognise as gpt
 from modules import google_vision as gv
 
 from PIL import Image
@@ -39,7 +39,7 @@ def save(file) -> list:
 
     return [response, file_location]
 
-def process(file_path, ai:bool=True) -> dict:
+def process(file_path) -> dict:
     """Process Image\n
     
     Keyword arguments:\n
@@ -57,8 +57,6 @@ def process(file_path, ai:bool=True) -> dict:
         } \n
     """
 
-    if ai: return gpt.process_image(file_path)
-
     # Detect text
     text_detect = gv.text_detect(file_path=file_path)
 
@@ -71,7 +69,7 @@ def process(file_path, ai:bool=True) -> dict:
         'factura_n': trc.invoice_number(text=text_detect),
     }
 
-    return text_detect
+    return dcse.make_decision(text_detect, file_path)
 
 def delete(file_path:str) -> bool:
     """Delete Photo\n
