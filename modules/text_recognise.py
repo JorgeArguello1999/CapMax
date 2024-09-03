@@ -8,7 +8,7 @@ except:
 # Precompile regex patterns
 REGEX_RUC = re.compile(r'\d{10,13}')
 REGEX_DATE = re.compile(r'\b(?:\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4}|\d{1,2}[-/.][a-zA-Z]{3}[-/.]\d{2,4})\b')
-REGEX_TOTAL = re.compile(r"\bTOTAL\b\s*\$?\s*([\d,\.]+)")
+REGEX_TOTAL = re.compile(r'\bTOTAL(?:[\s:]*[A-Z\s]*[\$]?[\s]*)?([\d.,]+)\b', re.IGNORECASE)
 REGEX_INVOICE = re.compile(r'\b\d{3}-\d{3}-\d{9}\b')
 REGEX_AUTH_INVOICE = re.compile(r"AUT\. SRI\s*\.?\s*N?°?\s*\d{10}|AUTORIZACIÓN\s+SRI\s*[#N°]?\s*\d{10}|N°\s*\d{10}|AUTORIZACIÓN\s*\d{49}|\d{49}")
 REGEX_INVOICE_6_7_DIGITS = re.compile(r'\b0{3,4}[1-9]\d{2,5}\b')
@@ -50,9 +50,11 @@ def total_value_detect(text: str) -> list:
     text = re.sub('\n', ' ', text).upper()
     text = re.sub(r'[^a-zA-Z0-9.,]', ' ', text)
 
-    results = [
-        float(val.replace(',', '.')) for val in REGEX_TOTAL.findall(text) if val.replace('.', '', 1).isdigit()
-    ]
+    results = REGEX_TOTAL.findall(text)
+    results = [float(val.replace(',', '.')) for val in results if val.replace('.', '', 1).isdigit()]
+    results = [result for result in results if len(str(result)) < 7]
+    print(results)
+
     return [max(results)] if results else []
 
 def invoice_number(text: str) -> list:
