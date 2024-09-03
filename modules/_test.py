@@ -1,5 +1,7 @@
 import text_recognise as tcr
+import decision_engine as dcse
 from tabulate import tabulate
+
 from colorama import Fore, Style, init
 
 # Inicializa colorama para la compatibilidad en todas las plataformas
@@ -12,22 +14,6 @@ def colorize_response(score):
         return Fore.YELLOW + f"🤔 ({score} puntos)"
     else:
         return Fore.RED + f"❌ ({score} puntos)"
-
-def calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n):
-    score = 5
-    if not ruc_detect.get("vendor"):
-        score -= 1
-    if not ruc_detect.get("client"):
-        score -= 1
-    if not date_detect:
-        score -= 1
-    if not total_v:
-        score -= 1
-    if not factura_n:
-        score -= 1
-    if not auth_factura_n:
-        score -= 1
-    return score
 
 if __name__ == "__main__":
 
@@ -61,7 +47,7 @@ if __name__ == "__main__":
             total_facture_detected += len(factura_n)
             total_auth_facture_detected += len(auth_factura_n)
 
-            score = calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n)
+            score = dcse.calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n)
             response = colorize_response(score)
 
             results.append([
