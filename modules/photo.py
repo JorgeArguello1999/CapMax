@@ -1,3 +1,4 @@
+from modules import decision_engine as dcse
 from modules import text_recognise as trc
 from modules import google_vision as gv
 
@@ -43,6 +44,7 @@ def process(file_path) -> dict:
     
     Keyword arguments:\n
     file_path: Image's directory\n
+    ai (bool): False -> REGEX function True -> GPT recognise
     Return: { \n
         'rucs' : {
             'vendor': int,
@@ -54,19 +56,21 @@ def process(file_path) -> dict:
         'factura_n' : str
         } \n
     """
+
     # Detect text
     text_detect = gv.text_detect(file_path=file_path)
 
-    # Classify and search
+    # Classify and search by REGEX
     text_detect = {
         'rucs': trc.rucs_detects(text=text_detect),
         'dates': trc.date_detect(text=text_detect),
         'total_value': trc.total_value_detect(text=text_detect),
         'factura_auth': trc.auth_invoice_number(text=text_detect), 
         'factura_n': trc.invoice_number(text=text_detect),
+        'ai': False,
     }
 
-    return text_detect
+    return dcse.make_decision(text_detect, file_path)
 
 def delete(file_path:str) -> bool:
     """Delete Photo\n
