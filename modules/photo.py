@@ -67,6 +67,7 @@ def process(file_path) -> dict:
         'total_value': trc.total_value_detect(text=text_detect),
         'factura_auth': trc.auth_invoice_number(text=text_detect), 
         'factura_n': trc.invoice_number(text=text_detect),
+        'ai': False,
     }
 
     return dcse.make_decision(text_detect, file_path)

@@ -22,7 +22,7 @@ Values: Total values, subtotals, VAT
 Auth Invoice: The authentication number of the invoice.
 
 Do it in a JSON format like this:
-{"title": "test_11.jpg", "response": true, "process": {"rucs": {"vendor": "ID or RUC of the invoice owner", "client": "ID or RUC of the invoice client"}, "dates": ["12/08/2024"],"total_value": [$$.$$], "factura_auth": ["7 to 49 digits"], "factura_n": ["invoice number"]}}
+{"title": "test_11.jpg", "response": true, "process": {"rucs": {"vendor": "ID or RUC of the invoice owner", "client": "ID or RUC of the invoice client"}, "dates": ["12/08/2024"],"total_value": [$$.$$], "factura_auth": ["7 to 49 digits"], "factura_n": ["invoice number"], "ai": True (Ever True)}} 
 """
 
 # Function to encode the image in base64

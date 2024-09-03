@@ -25,7 +25,7 @@ def make_decision(data:dict, path:str) -> dict:
 
     results = data
     try: 
-        if score <= 2: 
+        if score <= 5: 
             print(f">>> Using GPT for recognise...  Score [{score}]")
             results = gpt_recognise.process_image(path)
     except Exception as e:
