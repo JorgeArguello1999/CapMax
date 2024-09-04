@@ -16,35 +16,35 @@ def calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n)
     return score
 
 # Make decision
-def make_decision(data:dict) -> dict:
+def make_decision(regex_results:dict, gpt_results:dict) -> dict:
     score = calculate_score(
-        ruc_detect=data['rucs'], 
-        date_detect=data['dates'], 
-        total_v=data['total_value'], 
-        factura_n=data['factura_n'], 
-        auth_factura_n=data['factura_auth']
+        ruc_detect=regex_results['rucs'], 
+        date_detect=regex_results['date'], 
+        total_v=regex_results['total_value'], 
+        factura_n=regex_results['factura_n'], 
+        auth_factura_n=regex_results['factura_auth']
     )
 
-    results = data
-    try: 
-        if score <= 5: 
-            print(f">>> Using GPT for recognise...  Score [{score}]")
-    except Exception as e:
-        print(e)
-    
-    return results
-  
+    if score < 3:
+        print(f">>> Using GPT results... Score [{score}]")
+        return gpt_results
+    else:
+        print(f">>> Using regex results... Score [{score}]")
+        return regex_results
 
 def get_response(file_path:str) -> dict:
     text = google_vision.text_detect(file_path=file_path)
 
-    # First thread
+    # First thread: regex response
     regex = regex_response(text)
 
-    # Second thread 
+    # Second thread: GPT response
     gpt = gpt_response(file_path)
 
-    return regex, gpt
+    # Make decision based on regex score
+    results = make_decision(regex_results=regex, gpt_results=gpt)
+
+    return results
 
 def gpt_response(file_path:str) -> dict:
     return gpt_recognise.process_image(file_path)
@@ -63,6 +63,5 @@ def regex_response(text:str) -> dict:
             'total_value': total.result(),
             'factura_auth': factura_auth.result(),
             'factura_n': factura_numb.result(),
-            'ai': False
-
+            'ai': False  # Indicador de que es una respuesta generada por regex
         }
