@@ -43,6 +43,9 @@ def process(file_path:str, ia:bool=False, deposit:bool=False) -> dict:
     Keyword arguments:\n
     file_path: Image's directory\n
     ai (bool): False -> REGEX function True -> GPT recognise \n
+    deposit (bool): False -> Invoice function True -> Deposit function \n
+
+    # Invoice data
     Return: { \n
         'rucs' : {
             'vendor': int,
@@ -53,7 +56,18 @@ def process(file_path:str, ia:bool=False, deposit:bool=False) -> dict:
         'factura_auth' : str\n
         'factura_n' : str\n
         'ai': bool
-        } \n
+        }
+
+    # Deposit data \n
+    Return: { \n
+        "title":"deposit_0.jpeg", \n
+        "response":true, \n
+        "process": { \n
+            "amount":"$1000", \n
+            "receipt_number": "2042016", \n
+            "destination_account":"2670" \n
+        }                                   \n                                
+    } 
     """
     return h_master.make_decision(file_path, ia, deposit)
 
