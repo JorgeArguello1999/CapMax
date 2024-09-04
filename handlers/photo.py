@@ -1,6 +1,6 @@
-from handlers import decision_engine as dcse
 from modules import text_recognise as trc
 from vision import google_vision as gv
+from handlers import master as dcse
 
 from PIL import Image
 
