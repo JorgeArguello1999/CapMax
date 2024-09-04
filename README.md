@@ -87,15 +87,17 @@ CapMax is a web application that allows users to upload images and processes the
   - `Content-Type: multipart/form-data`
 - **Body:**
   - `file` (required): The image file to upload. It should be in binary format.
+  - `ia` (optional): Select if you want recognise with OPENAI or Regular Expression
 
 ### Curl Example
 
 ```bash
-curl -X 'POST' \
+curl -X POST \
   'http://127.0.0.1:8000/photo/' \
-  -H 'accept: application/json' \
+  -H 'Accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
-  -F 'file=@test_12.jpg;type=image/jpeg'
+  -F 'file=@path/to/your/image.jpg;type=image/jpeg' \
+  -F 'ia=true'
 ```
 
 ## Responses
