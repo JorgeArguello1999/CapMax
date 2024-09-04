@@ -2,12 +2,16 @@
 from fastapi import FastAPI
 from fastapi import File
 from fastapi import UploadFile
+from fastapi import Form
 
 # HTML response
 from fastapi.responses import HTMLResponse
 from fastapi.requests import Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+
+# Optional
+from typing import Optional
 
 # Modules
 from handlers import photo
@@ -54,12 +58,13 @@ async def get_home(request: Request):
     
 # Photo
 @app.post("/photo/")
-async def upload_photo(file: UploadFile = File(...)):
+async def upload_photo(file: UploadFile = File(...), ia:Optional[bool]=Form(False)):
     # Save the file 
     response, file_location = photo.save(file)
 
     # Process photo
-    process = photo.process(file_location)
+    print(f'>>> IA use: {ia}')
+    process = photo.process(file_location, ia)
 
     # Delete photo
     delete = photo.delete(file_location)

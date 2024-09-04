@@ -37,7 +37,7 @@ def save(file) -> list:
 
     return [response, file_location]
 
-def process(file_path:str) -> dict:
+def process(file_path:str, ia:bool=False) -> dict:
     """Process Image\n
     
     Keyword arguments:\n
@@ -55,7 +55,7 @@ def process(file_path:str) -> dict:
         'ai': bool
         } \n
     """
-    return h_master.make_decision(file_path)
+    return h_master.make_decision(file_path, ia)
 
 def delete(file_path:str) -> bool:
     """Delete Photo\n
