@@ -1,7 +1,4 @@
-try: 
-    from modules import gpt_recognise
-except:
-    import gpt_recognise
+from vision import gpt_recognise
 
 # Get score from response
 def calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n):

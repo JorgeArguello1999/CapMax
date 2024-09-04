@@ -1,6 +1,6 @@
 from modules import decision_engine as dcse
 from modules import text_recognise as trc
-from modules import google_vision as gv
+from vision import google_vision as gv
 
 from PIL import Image
 
