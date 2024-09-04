@@ -2,7 +2,7 @@ from vision import gpt_recognise
 from vision import google_vision  
 
 # Invoice methods
-from handlers import rucs_detect as rd
+from handlers import invoice_detect as rd
 
 # Make decision
 def make_decision(file_path:str, ia:bool=False, deposit:bool=False) -> dict:
