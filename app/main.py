@@ -25,7 +25,7 @@ docs = None if _debug != 'True' else '/docs'
 redoc = None if _debug != 'True' else '/redoc'
 
 # 'uploads/' directory
-dire = 'uploads/'
+dire = 'app/uploads/'
 if not path.exists(dire): 
     try: 
         makedirs(dire)
@@ -43,9 +43,9 @@ app = FastAPI(
 )
 
 # Templates dir
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 # Static Files
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # Home
 @app.get('/', response_class=HTMLResponse)
