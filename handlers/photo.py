@@ -1,5 +1,4 @@
-from modules import text_recognise as trc
-from modules import google_vision as gv
+from handlers import master as h_master
 
 from PIL import Image
 
@@ -9,7 +8,7 @@ import re
 import os
 
 # Directory 
-direct = "uploads/"
+direct = "app/uploads/"
 
 # Suspends num of pixels
 Image.MAX_IMAGE_PIXELS = None
@@ -38,11 +37,12 @@ def save(file) -> list:
 
     return [response, file_location]
 
-def process(file_path) -> dict:
+def process(file_path:str, ia:bool=False) -> dict:
     """Process Image\n
     
     Keyword arguments:\n
     file_path: Image's directory\n
+    ai (bool): False -> REGEX function True -> GPT recognise \n
     Return: { \n
         'rucs' : {
             'vendor': int,
@@ -51,22 +51,11 @@ def process(file_path) -> dict:
         'dates' : str 'DD/MM/YYYY',\n
         'total_value' : int,\n
         'factura_auth' : str\n
-        'factura_n' : str
+        'factura_n' : str\n
+        'ai': bool
         } \n
     """
-    # Detect text
-    text_detect = gv.text_detect(file_path=file_path)
-
-    # Classify and search
-    text_detect = {
-        'rucs': trc.rucs_detects(text=text_detect),
-        'dates': trc.date_detect(text=text_detect),
-        'total_value': trc.total_value_detect(text=text_detect),
-        'factura_auth': trc.auth_invoice_number(text=text_detect), 
-        'factura_n': trc.invoice_number(text=text_detect),
-    }
-
-    return text_detect
+    return h_master.make_decision(file_path, ia)
 
 def delete(file_path:str) -> bool:
     """Delete Photo\n

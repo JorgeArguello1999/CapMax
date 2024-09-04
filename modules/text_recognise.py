@@ -1,9 +1,6 @@
 import re
 
-try:
-    import validate_date as vd
-except: 
-    from modules import validate_date as vd
+from modules import validate_date as vd
 
 # Precompile regex patterns
 REGEX_RUC = re.compile(r'\d{10,13}')

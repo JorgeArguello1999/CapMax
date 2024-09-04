@@ -16,7 +16,16 @@
 
     <form id="upload-form" action="photo/" enctype="multipart/form-data" method="post">
         <input id="file-input" name="file" type="file" accept="image/*">
+
+        <hr>
+
+        <label for="use_ai">Use AI:</label>
+        <input type="checkbox" id="ia" name="ia" value="true">
+
+        <hr>
+
         <input type="submit" value="Upload">
+
     </form>
 
     <div class="preview-results-container">
