@@ -1,5 +1,5 @@
-import text_recognise as tcr
-import decision_engine as dcse
+from modules import decision_engine as dcse
+from modules import text_recognise as tcr
 from tabulate import tabulate
 
 from colorama import Fore, Style, init
