@@ -1,6 +1,4 @@
-from modules import text_recognise as trc
-from vision import google_vision as gv
-from handlers import master as dcse
+from handlers import master as h_master
 
 from PIL import Image
 
@@ -39,7 +37,7 @@ def save(file) -> list:
 
     return [response, file_location]
 
-def process(file_path) -> dict:
+def process(file_path:str) -> dict:
     """Process Image\n
     
     Keyword arguments:\n
@@ -57,21 +55,7 @@ def process(file_path) -> dict:
         'ai': bool
         } \n
     """
-
-    # Detect text
-    text_detect = gv.text_detect(file_path=file_path)
-
-    # Classify and search by REGEX
-    text_detect = {
-        'rucs': trc.rucs_detects(text=text_detect),
-        'dates': trc.date_detect(text=text_detect),
-        'total_value': trc.total_value_detect(text=text_detect),
-        'factura_auth': trc.auth_invoice_number(text=text_detect), 
-        'factura_n': trc.invoice_number(text=text_detect),
-        'ai': False,
-    }
-
-    return dcse.make_decision(text_detect, file_path)
+    return h_master.get_response(file_path)
 
 def delete(file_path:str) -> bool:
     """Delete Photo\n
