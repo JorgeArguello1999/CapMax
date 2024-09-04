@@ -140,7 +140,7 @@ curl -X POST \
       "response":true,
       "process": {
         "amount":"$100.00",
-        "receipt_number":"204269016",
+        "receipt_number":"2042696",
         "destination_account":"2670"
       }
     }                                                                  
