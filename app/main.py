@@ -65,7 +65,7 @@ async def upload_photo(file: UploadFile = File(...), ia:Optional[bool]=Form(Fals
     # Process photo
     print(f'>>> IA use: {ia}')
     print(f'>>> Deposit mode: {deposit}')
-    process = photo.process(file_location, ia)
+    process = photo.process(file_location, ia, deposit)
 
     # Delete photo
     delete = photo.delete(file_location)
