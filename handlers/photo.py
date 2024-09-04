@@ -55,7 +55,7 @@ def process(file_path:str) -> dict:
         'ai': bool
         } \n
     """
-    return h_master.get_response(file_path)
+    return h_master.make_decision(file_path)
 
 def delete(file_path:str) -> bool:
     """Delete Photo\n
