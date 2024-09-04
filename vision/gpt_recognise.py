@@ -13,7 +13,7 @@ load_dotenv()
 api_key = getenv('GPT_KEY')
 
 # Query for the model
-consult = """ 
+consult_invoice = """ 
 From this text extracted from an invoice image, I would like you to extract the following data:
 RUC: Client and provider
 Date: Invoice issuance date
@@ -25,18 +25,31 @@ Do it in a JSON format like this:
 {"title": "test_11.jpg", "response": true, "process": {"rucs": {"vendor": "ID or RUC of the invoice owner", "client": "ID or RUC of the invoice client"}, "dates": ["12/08/2024"],"total_value": [$$.$$], "factura_auth": ["7 to 49 digits"], "factura_n": ["invoice number"], "ai": True (Ever True)}} 
 """
 
+consult_deposit = """ 
+You are given the following details from an image of a transaction receipt:
+
+1. Extract the "Amount" deposited (denoted by "$").
+2. Extract the "Receipt number" (labeled as "Comprobante").
+3. Extract the "Destination account number" (partially hidden but represented by the last four digits).
+
+Please return the result in a JSON format with keys for `amount`, `receipt_number`, and `destination_account`. If any information is missing or not clear, return `null` for that field.
+"""
+
 # Function to encode the image in base64
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-def process_image(image_path):
+def process_image(image_path, deposit:bool=False):
     """
     Processes an image to extract information using the OpenAI API.
 
     :param image_path: Path to the image file to process.
     :return: JSON response from the API with the extracted data.
     """
+    if deposit: consult = consult_deposit
+    consult = consult_invoice
+
     # Get the base64 string of the image
     base64_image = encode_image(image_path)
 
@@ -55,7 +68,7 @@ def process_image(image_path):
                 "content": [
                     {
                         "type": "text",
-                        "text": consult
+                        "text": consult,
                     },
                     {
                         "type": "image_url",
