@@ -1,5 +1,13 @@
-import text_recognise as tcr
-import decision_engine as dcse
+import sys
+import os
+
+# Agregar la ruta del directorio principal
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
+sys.path.append(parent_dir)
+
+from handlers import master as dcse
+from modules import text_recognise as tcr
 from tabulate import tabulate
 
 from colorama import Fore, Style, init
