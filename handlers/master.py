@@ -16,7 +16,9 @@ def calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n)
     return score
 
 # Make decision
-def make_decision(file_path:str) -> dict:
+def make_decision(file_path:str, ia:bool=False) -> dict:
+    if ia: return gpt_recognise.process_image(file_path) 
+
     text = google_vision.text_detect(file_path)
     regex = regex_response(text)
 
@@ -33,7 +35,7 @@ def make_decision(file_path:str) -> dict:
         print(f">>> Using GPT results... Score [{score}]")
         result = gpt_recognise.process_image(file_path)
     else:
-        print(f">>> Using regex results... Score [{score}]")
+        print(f">>> Using REGEX results... Score [{score}]")
 
     return result
 
