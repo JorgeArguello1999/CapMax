@@ -44,7 +44,7 @@ def process(file_path) -> dict:
     
     Keyword arguments:\n
     file_path: Image's directory\n
-    ai (bool): False -> REGEX function True -> GPT recognise
+    ai (bool): False -> REGEX function True -> GPT recognise \n
     Return: { \n
         'rucs' : {
             'vendor': int,
@@ -53,7 +53,8 @@ def process(file_path) -> dict:
         'dates' : str 'DD/MM/YYYY',\n
         'total_value' : int,\n
         'factura_auth' : str\n
-        'factura_n' : str
+        'factura_n' : str\n
+        'ai': bool
         } \n
     """
 
