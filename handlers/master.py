@@ -4,19 +4,8 @@ from modules import text_recognise as trc
 from vision import gpt_recognise
 from vision import google_vision  
 
-# Quality the answers
-def calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n):
-    score = 5
-    if not ruc_detect.get("vendor"): score -= 1
-    if not ruc_detect.get("client"): score -= 1
-    if not date_detect: score -= 1
-    if not total_v: score -= 1
-    if not factura_n: score -= 1
-    if not auth_factura_n: score -= 1
-    return score
-
 # Make decision
-def make_decision(file_path:str, ia:bool=False) -> dict:
+def make_decision(file_path:str, ia:bool=False, deposit:bool=False) -> dict:
     if ia: return gpt_recognise.process_image(file_path) 
 
     text = google_vision.text_detect(file_path)
@@ -39,6 +28,18 @@ def make_decision(file_path:str, ia:bool=False) -> dict:
 
     return result
 
+# Quality the answers
+def calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n):
+    score = 5
+    if not ruc_detect.get("vendor"): score -= 1
+    if not ruc_detect.get("client"): score -= 1
+    if not date_detect: score -= 1
+    if not total_v: score -= 1
+    if not factura_n: score -= 1
+    if not auth_factura_n: score -= 1
+    return score
+
+# Get REGEX response if invoice
 def regex_response(text:str) -> dict:
     with ThreadPoolExecutor() as executor:
         rucs = executor.submit(trc.rucs_detects, text=text)
