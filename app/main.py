@@ -10,7 +10,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 # Modules
-from modules import photo
+from handlers import photo
 
 # Load env 
 from dotenv import load_dotenv

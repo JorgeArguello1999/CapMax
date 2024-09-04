@@ -1,4 +1,4 @@
-from modules import decision_engine as dcse
+from handlers import decision_engine as dcse
 from modules import text_recognise as trc
 from vision import google_vision as gv
 
