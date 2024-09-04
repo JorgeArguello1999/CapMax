@@ -10,7 +10,7 @@ import re
 import os
 
 # Directory 
-direct = "uploads/"
+direct = "app/uploads/"
 
 # Suspends num of pixels
 Image.MAX_IMAGE_PIXELS = None
