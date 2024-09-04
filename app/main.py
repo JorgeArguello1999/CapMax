@@ -58,13 +58,14 @@ async def get_home(request: Request):
     
 # Photo
 @app.post("/photo/")
-async def upload_photo(file: UploadFile = File(...), ia:Optional[bool]=Form(False)):
+async def upload_photo(file: UploadFile = File(...), ia:Optional[bool]=Form(False), deposit:Optional[bool]=Form(False)):
     # Save the file 
     response, file_location = photo.save(file)
 
     # Process photo
     print(f'>>> IA use: {ia}')
-    process = photo.process(file_location, ia)
+    print(f'>>> Deposit mode: {deposit}')
+    process = photo.process(file_location, ia, deposit)
 
     # Delete photo
     delete = photo.delete(file_location)
