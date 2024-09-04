@@ -11,5 +11,5 @@ from handlers import master as master
 
 if __name__ == '__main__':
     file = '../app/uploads/test_0.jpg'
-    results = master.get_response(file)
+    results = master.make_decision(file)
     print(results)
