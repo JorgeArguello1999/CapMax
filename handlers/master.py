@@ -16,38 +16,26 @@ def calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n)
     return score
 
 # Make decision
-def make_decision(regex_results:dict, gpt_results:dict) -> dict:
-    score = calculate_score(
-        ruc_detect=regex_results['rucs'], 
-        date_detect=regex_results['date'], 
-        total_v=regex_results['total_value'], 
-        factura_n=regex_results['factura_n'], 
-        auth_factura_n=regex_results['factura_auth']
-    )
-
-    if score < 3:
-        print(f">>> Using GPT results... Score [{score}]")
-        return gpt_results
-    else:
-        print(f">>> Using regex results... Score [{score}]")
-        return regex_results
-
-def get_response(file_path:str) -> dict:
-    text = google_vision.text_detect(file_path=file_path)
-
-    # First thread: regex response
+def make_decision(file_path:str) -> dict:
+    text = google_vision.text_detect(file_path)
     regex = regex_response(text)
 
-    # Second thread: GPT response
-    gpt = gpt_response(file_path)
+    score = calculate_score(
+        ruc_detect=regex['rucs'], 
+        date_detect=regex['date'], 
+        total_v=regex['total_value'], 
+        factura_n=regex['factura_n'], 
+        auth_factura_n=regex['factura_auth']
+    )
 
-    # Make decision based on regex score
-    results = make_decision(regex_results=regex, gpt_results=gpt)
+    result = regex
+    if score < 3:
+        print(f">>> Using GPT results... Score [{score}]")
+        result = gpt_recognise.process_image(file_path)
+    else:
+        print(f">>> Using regex results... Score [{score}]")
 
-    return results
-
-def gpt_response(file_path:str) -> dict:
-    return gpt_recognise.process_image(file_path)
+    return result
 
 def regex_response(text:str) -> dict:
     with ThreadPoolExecutor() as executor:
