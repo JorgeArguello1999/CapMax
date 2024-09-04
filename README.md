@@ -1,4 +1,4 @@
-![CapMax Icon](static/capmax_icon.png)
+![CapMax Icon](app/static/capmax_icon.png)
 
 # CapMax
 
@@ -88,6 +88,7 @@ CapMax is a web application that allows users to upload images and processes the
 - **Body:**
   - `file` (required): The image file to upload. It should be in binary format.
   - `ia` (optional): Select if you want recognise with OPENAI or Regular Expression
+  - `deposit` (required) If you want recognise and get the data from deposit document
 
 ### Curl Example
 
@@ -97,12 +98,13 @@ curl -X POST \
   -H 'Accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -F 'file=@path/to/your/image.jpg;type=image/jpeg' \
-  -F 'ia=true'
+  -F 'ia=true' \
+  -F 'deposit=false'
 ```
 
 ## Responses
 
-### **200 OK:**
+### **200 OK: Invoice Data**
   - **Description:** Successful response with the processed data.
   - **Content:**
     ```json
@@ -128,4 +130,18 @@ curl -X POST \
         ]
       }
     }
+    ```
+### **200 OK: Deposit Data**
+  - **Description:** Successful response with the processed data.
+  - **Content:**
+    ```json
+    {
+      "title":"deposit_0.jpeg",
+      "response":true,
+      "process": {
+        "amount":"$100.00",
+        "receipt_number":"204269016",
+        "destination_account":"2670"
+      }
+    }                                                                  
     ```
