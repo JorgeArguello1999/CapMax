@@ -1,7 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
 
 from vision import gpt_recognise
-from modules import text_recognise as trc
+from modules import invoice_recognise as trc
 
 def get_response(text:str, file_path:str) -> dict:
     regex = regex_response(text)
