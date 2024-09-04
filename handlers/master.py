@@ -1,8 +1,10 @@
-from vision import gpt_recognise as gv
+from concurrent.futures import ThreadPoolExecutor
+
 from modules import text_recognise as trc
+from vision import gpt_recognise
 from vision import google_vision  
 
-# Get score from response
+# Quality the answers
 def calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n):
     score = 5
     if not ruc_detect.get("vendor"): score -= 1
@@ -14,7 +16,7 @@ def calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n)
     return score
 
 # Make decision
-def make_decision(data:dict, path:str) -> dict:
+def make_decision(data:dict) -> dict:
     score = calculate_score(
         ruc_detect=data['rucs'], 
         date_detect=data['dates'], 
@@ -27,26 +29,40 @@ def make_decision(data:dict, path:str) -> dict:
     try: 
         if score <= 5: 
             print(f">>> Using GPT for recognise...  Score [{score}]")
-            results = gv.process_image(path)
     except Exception as e:
         print(e)
     
     return results
   
-# Get a response
+
 def get_response(file_path:str) -> dict:
-    # Detect text
-    text_detect = google_vision.text_detect(file_path=file_path)
+    text = google_vision.text_detect(file_path=file_path)
 
-    # Classify and search by REGEX
-    text_detect = {
-        'rucs': trc.rucs_detects(text=text_detect),
-        'dates': trc.date_detect(text=text_detect),
-        'total_value': trc.total_value_detect(text=text_detect),
-        'factura_auth': trc.auth_invoice_number(text=text_detect), 
-        'factura_n': trc.invoice_number(text=text_detect),
-        'ai': False,
-    }
+    # First thread
+    regex = regex_response(text)
 
-    return make_decision(text_detect, file_path)
+    # Second thread 
+    gpt = gpt_response(file_path)
 
+    return regex, gpt
+
+def gpt_response(file_path:str) -> dict:
+    return gpt_recognise.process_image(file_path)
+
+def regex_response(text:str) -> dict:
+    with ThreadPoolExecutor() as executor:
+        rucs = executor.submit(trc.rucs_detects, text=text)
+        date = executor.submit(trc.date_detect, text=text)
+        total = executor.submit(trc.total_value_detect, text=text)
+        factura_auth = executor.submit(trc.auth_invoice_number, text=text)
+        factura_numb = executor.submit(trc.invoice_number, text=text)
+
+        return {
+            'rucs': rucs.result(),
+            'date': date.result(),
+            'total_value': total.result(),
+            'factura_auth': factura_auth.result(),
+            'factura_n': factura_numb.result(),
+            'ai': False
+
+        }
