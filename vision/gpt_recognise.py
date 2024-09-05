@@ -22,9 +22,11 @@ Date: Invoice issuance date
 Values: Total values, subtotals, VAT 
 # Invoice: The invoice number
 Auth Invoice: The authentication number of the invoice.
+Direction: Detect the provider direction
+# Serie: Detect series number like 001-001 if electronic invoice "001-177-228791409" i want only the two first parts 001-177 
 
 Do it in a JSON format like this:
-{"title": "test_11.jpg", "response": true, "process": {"rucs": {"vendor": "ID or RUC of the invoice owner", "client": "ID or RUC of the invoice client"}, "dates": ["12/08/2024"],"total_value": [$$.$$], "factura_auth": ["7 to 49 digits"], "factura_n": ["invoice number"], "ai": True (Ever True)}} 
+{"process": {"rucs": {"vendor": "ID or RUC of the invoice owner", "client": "ID or RUC of the invoice client"}, "dates": ["12/08/2024"],"total_value": [$$.$$], "factura_auth": ["10 to 49 digits"], "factura_n": ["invoice number"], "ai": True (Ever True), "direction": "Direction Provider", "serie": "Series number"}} 
     """
 
     consult_deposit = """ 
@@ -32,13 +34,17 @@ You are given the following details from an image of a transaction receipt:
 
 1. Extract the "Amount" deposited (denoted by "$").
 2. Extract the "Receipt number" (labeled as "Comprobante").
-3. Extract the "Destination account number" (partially hidden but represented by the last four digits).
+3. Extract the "Destination account number" (All digits not import if have ** or x).
+4. Extract the "Acount's name" (Person own acount)
+5. Extract the date from picture  YYYY/MM/DD
 
 Please return the result in a JSON format with keys for `amount`, `receipt_number`, and `destination_account`. If any information is missing or not clear, return `null` for that field, put the result in 'process' key.
 { "process": {
-    "amount": "$100.00",
+    "amount": "100.00",
     "receipt_number": "204269016",
-    "destination_account": "2670"
+    "destination_account": "2670*****80",
+    "name": "Carlos",
+    "date": "YYYY/MM/DD"
 } }
 
 This is a example, don't use this information in your answers
