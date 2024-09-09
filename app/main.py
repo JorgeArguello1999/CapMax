@@ -1,4 +1,5 @@
 # FastApi modules
+from fastapi import HTTPException
 from fastapi import FastAPI
 from fastapi import File
 from fastapi import UploadFile
@@ -23,6 +24,9 @@ from os import getenv
 from os import path
 load_dotenv()
 
+# Requests
+import requests
+
 # DEV or PRO
 _debug = getenv('DEBUG')
 docs = None if _debug != 'True' else '/docs'
@@ -38,7 +42,7 @@ if not path.exists(dire):
         print(f'>>> Error: {str(e)}')
 
 else: 
-    print(f'>>> Directory {dire} exist')
+    print(f'>>> Directory {dire} exists')
 
 # Start FastAPI
 app = FastAPI(
@@ -59,14 +63,35 @@ async def get_home(request: Request):
 # Photo
 @app.post("/photo/")
 async def upload_photo(
-    file:Optional[UploadFile] = File(None),
-    ia:Optional[bool]=Form(False), 
-    deposit:Optional[bool]=Form(False),
-    image_url:Optional[str]=Form(None)
+    file: Optional[UploadFile] = File(None),
+    ia: Optional[bool] = Form(False), 
+    deposit: Optional[bool] = Form(False),
+    image_url: Optional[str] = Form(None)
 ):
+    file_location = None
+    response = False
 
-    # Save the file 
-    response, file_location = photo.save(file)
+    if file:
+        # Save the uploaded file
+        response, file_location = photo.save(file)
+    elif image_url:
+        try:
+            # Download the photo using requests
+            response = requests.get(image_url, headers={"User-Agent": "Mozilla/5.0"})
+            response.raise_for_status()  # Raise an HTTPError for bad responses
+
+            # Save the downloaded file
+            file_location = path.join(dire, image_url.split('/')[-1])
+            with open(file_location, "wb") as f:
+                f.write(response.content)
+            response = True
+        
+        except requests.RequestException as e:
+            print(f">>> Error: {str(e)}")
+            raise HTTPException(status_code=400, detail='Failed to download image')
+    
+    if not file_location:
+        raise HTTPException(status_code=400, detail='No image file or URL provided')
 
     # Process photo
     print(f'>>> IA use: {ia}')
@@ -76,11 +101,11 @@ async def upload_photo(
     # Delete photo
     delete = photo.delete(file_location)
 
-    if response and delete: response = True
-    else: False
+    if response and delete:
+        response = True
 
     return {
-        "title": file.filename,
-        "response" :response,
+        "title": file.filename if file else path.basename(file_location),
+        "response": response,
         "process": process
     }
