@@ -58,7 +58,13 @@ async def get_home(request: Request):
     
 # Photo
 @app.post("/photo/")
-async def upload_photo(file: UploadFile = File(...), ia:Optional[bool]=Form(False), deposit:Optional[bool]=Form(False)):
+async def upload_photo(
+    file:Optional[UploadFile] = File(None),
+    ia:Optional[bool]=Form(False), 
+    deposit:Optional[bool]=Form(False),
+    image_url:Optional[str]=Form(None)
+):
+
     # Save the file 
     response, file_location = photo.save(file)
 
