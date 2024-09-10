@@ -71,18 +71,26 @@ async def upload_photo(
     file_location = None
     response = False
 
+    # Restrict not both at the same time
+    if file.filename and image_url: 
+        raise HTTPException(status_code=400, detail="Only one method URL or File no both at the same time")
     # Save the uploaded file
-    if file: response, file_location = photo.save(file=file)
+    if file and not image_url: response, file_location = photo.save(file=file)
     # Download image from url 
-    elif image_url: response, file_location = photo.save_url(image_url=image_url)
+    if image_url: response, file_location = photo.save_url(image_url=image_url)
     # Any other file 
     if not response or file_location == None:
         raise HTTPException(status_code=400, detail='No valid image file or URL provided (jpg, jpeg, png)')
 
     # Process photo
+    print(f'>>> Image URL: {image_url}')
     print(f'>>> IA use: {ia}')
     print(f'>>> Deposit mode: {deposit}')
-    process = photo.process(file_location, ia, deposit)
+
+    try: process = photo.process(file_location, ia, deposit)
+    except Exception as e: 
+        process = f"Problem with your data please try again with new data" 
+        print(f'>>> Error: {str(e)}')
 
     # Delete photo
     delete = photo.delete(file_location)
