@@ -68,8 +68,10 @@ async def upload_photo(
     file_location = None
     response = False
 
+    try: file = file.filename
+    except: file = None
     # Restrict not both at the same time
-    if file.filename and image_url: 
+    if file and image_url: 
         raise HTTPException(status_code=400, detail="Only one method URL or File no both at the same time")
     # Save the uploaded file
     if file and not image_url: response, file_location = photo.save(file=file)
