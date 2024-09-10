@@ -24,9 +24,6 @@ from os import getenv
 from os import path
 load_dotenv()
 
-# Requests
-import requests
-
 # DEV or PRO
 _debug = getenv('DEBUG')
 docs = None if _debug != 'True' else '/docs'
