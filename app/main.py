@@ -71,25 +71,11 @@ async def upload_photo(
     file_location = None
     response = False
 
-    if file:
-        # Save the uploaded file
-        response, file_location = photo.save(file)
-    elif image_url:
-        try:
-            # Download the photo using requests
-            response = requests.get(image_url, headers={"User-Agent": "Mozilla/5.0"})
-            response.raise_for_status()  # Raise an HTTPError for bad responses
-
-            # Save the downloaded file
-            file_location = path.join(dire, image_url.split('/')[-1])
-            with open(file_location, "wb") as f:
-                f.write(response.content)
-            response = True
-        
-        except requests.RequestException as e:
-            print(f">>> Error: {str(e)}")
-            raise HTTPException(status_code=400, detail='Failed to download image')
-    
+    # Save the uploaded file
+    if file: response, file_location = photo.save(file=file)
+    # Download image from url 
+    elif image_url: response, file_location = photo.save_url(image_url=image_url)
+    # Any other file 
     if not file_location:
         raise HTTPException(status_code=400, detail='No image file or URL provided')
 
