@@ -99,7 +99,8 @@ curl -X POST \
   -H 'Content-Type: multipart/form-data' \
   -F 'file=@path/to/your/image.jpg;type=image/jpeg' \
   -F 'ia=true' \
-  -F 'deposit=false'
+  -F 'deposit=false' \
+  -F 'image_url=www.image.url/photo.jpg' 
 ```
 
 ## Responses

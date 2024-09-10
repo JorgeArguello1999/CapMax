@@ -1,4 +1,5 @@
 # FastApi modules
+from fastapi import HTTPException
 from fastapi import FastAPI
 from fastapi import File
 from fastapi import UploadFile
@@ -38,7 +39,7 @@ if not path.exists(dire):
         print(f'>>> Error: {str(e)}')
 
 else: 
-    print(f'>>> Directory {dire} exist')
+    print(f'>>> Directory {dire} exists')
 
 # Start FastAPI
 app = FastAPI(
@@ -58,23 +59,47 @@ async def get_home(request: Request):
     
 # Photo
 @app.post("/photo/")
-async def upload_photo(file: UploadFile = File(...), ia:Optional[bool]=Form(False), deposit:Optional[bool]=Form(False)):
-    # Save the file 
-    response, file_location = photo.save(file)
+async def upload_photo(
+    file: Optional[UploadFile] = File(None),
+    ia: Optional[bool] = Form(False), 
+    deposit: Optional[bool] = Form(False),
+    image_url: Optional[str] = Form(None)
+):
+    file_location = None
+    response = False
+
+    # Restrict not both at the same time
+    if file.filename and image_url: 
+        raise HTTPException(status_code=400, detail="Only one method URL or File no both at the same time")
+    # Save the uploaded file
+    if file and not image_url: response, file_location = photo.save(file=file)
+    # Download image from url 
+    if image_url: response, file_location = photo.save_url(image_url=image_url)
+    # Any other file 
+    if not response or file_location == None:
+        raise HTTPException(status_code=400, detail='No valid image file or URL provided (jpg, jpeg, png)')
 
     # Process photo
+    print(f'>>> Image URL: {image_url}')
     print(f'>>> IA use: {ia}')
     print(f'>>> Deposit mode: {deposit}')
-    process = photo.process(file_location, ia, deposit)
+
+    try: 
+        response = True
+        process = photo.process(file_location, ia, deposit)
+    except Exception as e: 
+        response = False
+        process = f"Problem with your data please try again with new data" 
+        print(f'>>> Error: {str(e)}')
 
     # Delete photo
     delete = photo.delete(file_location)
 
-    if response and delete: response = True
-    else: False
+    if response and delete:
+        response = True
 
     return {
-        "title": file.filename,
-        "response" :response,
+        "title": file.filename if file else path.basename(file_location),
+        "response": response,
         "process": process
     }
