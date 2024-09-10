@@ -84,8 +84,11 @@ async def upload_photo(
     print(f'>>> IA use: {ia}')
     print(f'>>> Deposit mode: {deposit}')
 
-    try: process = photo.process(file_location, ia, deposit)
+    try: 
+        response = True
+        process = photo.process(file_location, ia, deposit)
     except Exception as e: 
+        response = False
         process = f"Problem with your data please try again with new data" 
         print(f'>>> Error: {str(e)}')
 
