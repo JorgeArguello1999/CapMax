@@ -76,8 +76,8 @@ async def upload_photo(
     # Download image from url 
     elif image_url: response, file_location = photo.save_url(image_url=image_url)
     # Any other file 
-    if not file_location:
-        raise HTTPException(status_code=400, detail='No image file or URL provided')
+    if not response or file_location == None:
+        raise HTTPException(status_code=400, detail='No valid image file or URL provided (jpg, jpeg, png)')
 
     # Process photo
     print(f'>>> IA use: {ia}')
