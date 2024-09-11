@@ -41,7 +41,11 @@ def date_detect(text: str) -> str:
         re.sub(r'[-.]', '/', date) for date in REGEX_DATE.findall(text)
     ]
     valid_dates = vd.get_valid_dates(list(set(results)))
-    return vd.get_most_recent_date(valid_dates)
+    try:
+        return vd.get_most_recent_date(valid_dates)[0]
+    except Exception as e:
+        print(f'>>> Error: {str(e)}')
+        return ""
 
 def total_value_detect(text: str) -> list:
     text = re.sub('\n', ' ', text).upper()
@@ -51,7 +55,12 @@ def total_value_detect(text: str) -> list:
     results = [float(val.replace(',', '.')) for val in results if val.replace('.', '', 1).isdigit()]
     results = [result for result in results if len(str(result)) < 7]
 
-    return [max(results)] if results else []
+    results = [max(results)] if results else []
+    try:
+        return str(results[0])
+    except Exception as e:
+        print(f">>> Error: {str(e)}")
+        return ""
 
 def invoice_number(text: str) -> list:
     text_cleaned = re.sub(r'\n', ' ', text)
@@ -63,10 +72,19 @@ def invoice_number(text: str) -> list:
         results = REGEX_INVOICE_6_7_DIGITS.findall(text_cleaned) or REGEX_INVOICE_9_DIGITS.findall(text_cleaned)
         results = list(set(results))[:1]
 
-    return results
+    try:
+        return results[0]
+    except Exception as e:
+        print(f">>> Error: {str(e)}")
+        return ""
 
 def auth_invoice_number(text: str) -> list:
     result = REGEX_AUTH_INVOICE.findall(re.sub('\n', ' ', text).upper())
-    return list(set([
+    result = list(set([
         re.sub(r'\D', '', res) for res in result
     ]))
+
+    try:
+        return result[0]
+    except Exception as e:
+        print(f">>> Error: {str(e)}")
