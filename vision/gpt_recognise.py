@@ -22,11 +22,11 @@ Date: Invoice issuance date
 Values: Total values, subtotals, VAT 
 # Invoice: The invoice number
 Auth Invoice: The authentication number of the invoice.
-Direction: Detect the provider direction
+Direction: Detect the provider direction (Ever this information is on the top position from invoice)
 # Serie: Detect series number like 001-001 if electronic invoice "001-177-228791409" i want only the two first parts 001-177 
 
 Do it in a JSON format like this:
-{"process": {"rucs": {"vendor": "ID or RUC of the invoice owner", "client": "ID or RUC of the invoice client"}, "dates": "12/08/2024","total_value": "$$.$$", "factura_auth": "10 to 49 digits", "factura_n": "invoice number", "ai": True (Ever True), "direction": "Direction Provider", "serie": "Series number"}} 
+{"process": {"rucs": {"vendor": "ID or RUC of the invoice owner", "client": "ID or RUC of the invoice client"}, "dates": "12/08/2024","total_value": "$$.$$ (Here not include $ simbol)", "factura_auth": "10 to 49 digits", "factura_n": "invoice number", "ai": True (Ever True), "direction": "Direction Provider", "serie": "Series number"}} 
     """
 
     consult_deposit = """ 
