@@ -42,6 +42,7 @@ def regex_response(text:str) -> dict:
         total = executor.submit(trc.total_value_detect, text=text)
         factura_auth = executor.submit(trc.auth_invoice_number, text=text)
         factura_numb = executor.submit(trc.invoice_number, text=text)
+        direction = executor.submit(trc.extract_address, text=text)
 
         return {
             'rucs': rucs.result(),
@@ -49,5 +50,7 @@ def regex_response(text:str) -> dict:
             'total_value': total.result(),
             'factura_auth': factura_auth.result(),
             'factura_n': factura_numb.result(),
-            'ai': False  # Indicador de que es una respuesta generada por regex
+            'ai': False, # AI indicator
+            'direction': direction.result(),
+            'serie': '',
         }

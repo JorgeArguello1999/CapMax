@@ -10,6 +10,7 @@ REGEX_INVOICE = re.compile(r'\b\d{3}-\d{3}-\d{9}\b')
 REGEX_AUTH_INVOICE = re.compile(r"AUT\. SRI\s*\.?\s*N?°?\s*\d{10}|AUTORIZACIÓN\s+SRI\s*[#N°]?\s*\d{10}|N°\s*\d{10}|AUTORIZACIÓN\s*\d{49}|\d{49}")
 REGEX_INVOICE_6_7_DIGITS = re.compile(r'\b0{3,4}[1-9]\d{2,5}\b')
 REGEX_INVOICE_9_DIGITS = re.compile(r'\b0{3,6}[1-9]\d{2,5}\b')
+REGEX_ADDRESS = re.compile(r'\b(?:Av|Avenida|Calle)\s+[A-Za-z\s]+(?:y\s+[A-Za-z\s]+)?\b', re.IGNORECASE)
 
 # Prefix and Suffix for RUC detection
 PREFIXES = {f'0{i}' for i in range(1, 10)}.union({f'{i}' for i in range(11, 25)}, {'88', '90'})
@@ -88,3 +89,18 @@ def auth_invoice_number(text: str) -> list:
         return result[0]
     except Exception as e:
         print(f">>> Error: {str(e)}")
+
+def extract_address(text: str) -> str:
+    # Clean text to remove unnecessary characters
+    text_cleaned = re.sub(r'[^A-Za-z\s]', ' ', text)
+    text_cleaned = re.sub('\n', ' ', text_cleaned)
+    # Find all address patterns
+    addresses = REGEX_ADDRESS.findall(text_cleaned)
+    
+    # Return the first found address, if any, or an empty string
+    result = addresses[0] if addresses else ""
+    try:
+        return result[:40]
+    except Exception as e:
+        print(f">>> Error: {str(e)}")
+        return ""
