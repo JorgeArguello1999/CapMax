@@ -65,21 +65,27 @@ async def upload_photo(
     deposit: Optional[bool] = Form(False),
     image_url: Optional[str] = Form(None)
 ):
-    file_location = None
-    response = False
 
-    try: file = file.filename
-    except: file = None
-    # Restrict not both at the same time
-    if file and image_url: 
-        raise HTTPException(status_code=400, detail="Only one method URL or File no both at the same time")
-    # Save the uploaded file
-    if file and not image_url: response, file_location = photo.save(file=file)
-    # Download image from url 
-    if image_url: response, file_location = photo.save_url(image_url=image_url)
-    # Any other file 
-    if not response or file_location == None:
-        raise HTTPException(status_code=400, detail='No valid image file or URL provided (jpg, jpeg, png)')
+    if file and image_url:
+        if file.filename: 
+            raise HTTPException(status_code=400, detail="Cannot upload both file and URL at the same time.")
+
+    try:
+        if file and file.filename: # Check if file exist 
+            response, file_location = photo.save(file=file)
+
+        elif image_url:  # URL
+            response, file_location = photo.save_url(image_url=image_url)
+
+        else:
+            raise HTTPException(status_code=400, detail="No valid image file or URL provided.")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")
+
+
+    print(response)
+    print(file_location)
 
     # Process photo
     print(f'>>> Image URL: {image_url}')
