@@ -11,11 +11,13 @@ def get_response(text:str, file_path:str) -> dict:
         date_detect=regex['date'], 
         total_v=regex['total_value'], 
         factura_n=regex['factura_n'], 
-        auth_factura_n=regex['factura_auth']
+        auth_factura_n=regex['factura_auth'],
+        direction=regex['direction'],
+        serie=regex['serie']
     )
 
     result = regex
-    if score < 3:
+    if score < 5:
         print(f">>> Using GPT results... Score [{score}]")
         result = gpt_recognise.process_image(file_path)
     else:
@@ -24,14 +26,24 @@ def get_response(text:str, file_path:str) -> dict:
     return result   
 
 # Quality the answers
-def calculate_score(ruc_detect, date_detect, total_v, factura_n, auth_factura_n):
-    score = 5
+def calculate_score(
+    ruc_detect, 
+    date_detect, 
+    total_v, 
+    factura_n, 
+    auth_factura_n,
+    direction,
+    serie
+):
+    score = 7
     if not ruc_detect.get("vendor"): score -= 1
     if not ruc_detect.get("client"): score -= 1
     if not date_detect: score -= 1
     if not total_v: score -= 1
     if not factura_n: score -= 1
     if not auth_factura_n: score -= 1
+    if not direction: score -= 1
+    if not serie: score -= 1
     return score
 
 # Get REGEX response if invoice
