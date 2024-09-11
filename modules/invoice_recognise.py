@@ -11,6 +11,7 @@ REGEX_AUTH_INVOICE = re.compile(r"AUT\. SRI\s*\.?\s*N?°?\s*\d{10}|AUTORIZACIÓN
 REGEX_INVOICE_6_7_DIGITS = re.compile(r'\b0{3,4}[1-9]\d{2,5}\b')
 REGEX_INVOICE_9_DIGITS = re.compile(r'\b0{3,6}[1-9]\d{2,5}\b')
 REGEX_ADDRESS = re.compile(r'\b(?:Av|Avenida|Calle)\s+[A-Za-z\s]+(?:y\s+[A-Za-z\s]+)?\b', re.IGNORECASE)
+REGEX_SERIAL_NUMBER = re.compile(r'\b\d{3}-\d{3}\b')
 
 # Prefix and Suffix for RUC detection
 PREFIXES = {f'0{i}' for i in range(1, 10)}.union({f'{i}' for i in range(11, 25)}, {'88', '90'})
@@ -104,3 +105,10 @@ def extract_address(text: str) -> str:
     except Exception as e:
         print(f">>> Error: {str(e)}")
         return ""
+
+def extract_serial_number(text: str) -> str:
+    # Find all serial numbers that match the pattern
+    serial_numbers = REGEX_SERIAL_NUMBER.findall(text)
+    
+    # Return the first found serial number, if any, or an empty string
+    return serial_numbers[0] if serial_numbers else ""
