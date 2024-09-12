@@ -24,6 +24,7 @@ Values: Total values, subtotals, VAT
 Auth Invoice: The authentication number of the invoice.
 Direction: Detect the provider direction (Ever this information is on the top position from invoice)
 # Serie: Detect series number like 001-001 if electronic invoice "001-177-228791409" i want only the two first parts 001-177 
+In case you find partial data, put what you found, don't make up data, just put what you can find. Do not alter data, especially numbers.
 
 Do it in a JSON format like this:
 {"process": {"rucs": {"vendor": "ID or RUC of the invoice owner", "client": "ID or RUC of the invoice client"}, "dates": "12/08/2024","total_value": "$$.$$ (Here not include $ simbol)", "factura_auth": "10 to 49 digits", "factura_n": "invoice number", "ai": True (Ever True), "direction": "Direction Provider", "serie": "Series number"}} 
@@ -34,9 +35,10 @@ You are given the following details from an image of a transaction receipt:
 
 1. Extract the "Amount" deposited (denoted by "$").
 2. Extract the "Receipt number" (labeled as "Comprobante").
-3. Extract the "Destination account number" (All digits not import if have ** or x).
-4. Extract the "Acount's name" (Person own acount)
+3. Extract the "Destination account number" (All digits not import if have ** or x) Account reciving the money.
+4. Extract the "Acount's name" (Person who recives the money) 
 5. Extract the date from picture  YYYY/MM/DD
+In case you find partial data, put what you found, don't make up data, just put what you can find. Do not alter data, especially numbers.
 
 Please return the result in a JSON format with keys for `amount`, `receipt_number`, and `destination_account`. If any information is missing or not clear, return `null` for that field, put the result in 'process' key.
 { "process": {
